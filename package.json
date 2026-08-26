@@ -1,0 +1,11 @@
+{
+  "name": "sivakasi-green-forum",
+  "version": "1.0.0",
+  "description": "Sivakasi Green Forum — Environmental NGO Web Application & Admin Panel",
+  "main": "backend/backend/server.js",
+  "scripts": {
+    "start": "node backend/backend/server.js",
+    "dev": "node backend/backend/server.js",
+    "seed": "node backend/backend/db/seed.js"
+  }
+}

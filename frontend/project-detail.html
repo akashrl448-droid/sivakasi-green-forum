@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Details — Sivakasi Green Forum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b4332; --sage:#556b5c; --body:#1c2521; --border:#d2dbd3;
+    --rust:#c25e30; --input-bg:#f7f4ef; --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--white); color:var(--body); font-family:'Figtree',sans-serif; font-size:16px; line-height:1.6;}
+  .serif{font-family:'Fraunces',serif; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{list-style:none;}
+  .wrap{max-width:1440px; margin:0 auto; padding:0 80px;}
+  .eyebrow{font-weight:700; font-size:14px; text-transform:uppercase; color:var(--rust); letter-spacing:0.01em;}
+  section{width:100%;}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; padding:14px 28px; font-weight:700; font-size:15px;
+    border-top-left-radius:18px; border-top-right-radius:6px; border-bottom-right-radius:18px; border-bottom-left-radius:6px;
+    cursor:pointer; border:none; transition:opacity .15s ease, background .15s ease;}
+  .btn-primary{background:var(--ink); color:var(--white);}
+  .btn-primary:hover{opacity:0.9;}
+  .btn-outline-dark{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .btn-outline-dark:hover{background:var(--ink); color:var(--white);}
+
+  header{position:sticky; top:0; z-index:100; background:var(--white); border-bottom:1px solid var(--border);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:20px 0;}
+  .logo-group{display:flex; align-items:center; gap:12px;}
+  .logo-text .l1{font-family:'Fraunces',serif; font-weight:900; font-size:20px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .logo-text .l2{font-weight:600; font-size:11px; color:var(--sage); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;}
+  nav.main-nav ul{display:flex; align-items:center; gap:28px; font-size:14px;}
+  nav.main-nav a{color:var(--sage); font-weight:500;}
+  nav.main-nav a.active{color:var(--ink); font-weight:700;}
+  nav.main-nav a:hover{color:var(--ink);}
+  nav.main-nav li.has-drop{position:relative;}
+  .dropdown{position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px);
+    background:var(--white); border:1px solid var(--border); min-width:190px; border-radius:8px; overflow:hidden;
+    opacity:0; visibility:hidden; transition:all .18s ease; box-shadow:0 12px 24px rgba(27,67,50,0.08);}
+  li.has-drop:hover .dropdown{opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);}
+  .dropdown a{display:block; padding:11px 16px; font-size:13.5px; border-bottom:1px solid var(--border);}
+  .dropdown a:last-child{border-bottom:none;}
+  .dropdown a:hover{background:var(--input-bg);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{width:22px; height:2px; background:var(--ink);}
+
+  .mobile-menu{
+    display:none; flex-direction:column; background:var(--white); border-bottom:1px solid var(--border); padding:20px 24px; gap:14px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:15px; font-weight:600; color:var(--ink); padding:8px 0; border-bottom:1px solid var(--input-bg);}
+  .mobile-menu .sub-links{display:flex; flex-direction:column; padding-left:14px; gap:8px;}
+  .mobile-menu .sub-links a{font-size:13.5px; color:var(--sage); border-bottom:none; padding:4px 0;}
+
+  .page-hero-outer{padding:24px 24px 0;}
+  .page-hero{position:relative; border-radius:0 0 40px 40px; overflow:hidden; padding:96px 80px; background:#2b4a3a;}
+  .page-hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+  .page-hero .overlay{position:absolute; inset:0; background:rgba(27,67,50,0.65); z-index:1;}
+  .page-hero-content{position:relative; z-index:2; max-width:880px;}
+  .breadcrumb{display:flex; gap:8px; font-size:13px; color:rgba(255,255,255,0.7); margin-bottom:20px;}
+  .breadcrumb a:hover{color:var(--white);}
+  .status-row{display:flex; gap:12px; align-items:center; margin-bottom:12px;}
+  .status-stamp-lg{
+    background:var(--rust); color:var(--white); font-size:11px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.06em; padding:6px 14px; border-radius:100px;
+  }
+  .cat-label{color:#e8a583; font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.04em;}
+  .page-hero h1{font-size:46px; font-weight:900; color:var(--white); line-height:1.15; margin-top:8px;}
+  .page-hero p.lede{font-size:17.5px; color:var(--white); opacity:0.92; margin-top:16px; max-width:720px; line-height:1.6;}
+
+  /* facts strip */
+  .facts-strip{border-bottom:1px solid var(--border); background:var(--white);}
+  .facts-inner{
+    max-width:1440px; margin:0 auto; padding:24px 80px; display:grid; grid-template-columns:repeat(5,1fr); gap:24px;
+  }
+  .fact{display:flex; flex-direction:column; gap:2px;}
+  .fact .lbl{font-size:11px; font-weight:700; text-transform:uppercase; color:var(--rust); letter-spacing:0.04em;}
+  .fact .val{font-size:15px; font-weight:700; color:var(--ink);}
+
+  /* main layout */
+  .detail-layout{display:flex; gap:64px; padding:80px 0; align-items:flex-start;}
+  .detail-main{flex:1; display:flex; flex-direction:column; gap:48px;}
+  .detail-section{display:flex; flex-direction:column; gap:16px;}
+  .detail-section h3{font-family:'Fraunces',serif; font-weight:700; font-size:24px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .detail-section p{color:var(--body); font-size:15.5px; line-height:1.7;}
+  .obj-list{display:flex; flex-direction:column; gap:12px; margin-top:4px;}
+  .obj-list li{display:flex; gap:12px; font-size:15px; color:var(--body);}
+  .obj-check{
+    width:22px; height:22px; border-radius:50%; background:var(--ink); color:var(--white);
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; margin-top:2px;
+  }
+
+  .gallery-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:8px;}
+  .gallery-grid img{width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:14px;}
+
+  .progress-block{background:var(--input-bg); border-radius:16px; padding:24px; display:flex; flex-direction:column; gap:8px;}
+  .progress-block .progress-top{display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--ink);}
+  .progress-block .progress-track{height:8px; background:var(--white); border:1px solid var(--border); border-radius:100px; overflow:hidden;}
+  .progress-block .progress-fill{height:100%; background:var(--rust); border-radius:100px;}
+
+  /* sidebar card */
+  .detail-side{width:340px; flex-shrink:0; display:flex; flex-direction:column; gap:24px; position:sticky; top:100px;}
+  .side-card{background:var(--white); border:1px solid var(--border); border-radius:20px 8px 20px 8px; padding:28px; display:flex; flex-direction:column; gap:14px;}
+  .side-card h4{font-family:'Fraunces',serif; font-weight:700; font-size:18px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .side-card.side-cta{background:var(--input-bg); border-color:var(--border);}
+  .side-card.side-cta p{font-size:13.5px; color:var(--sage); line-height:1.5;}
+  .side-card .btn{width:100%;}
+  .side-row{display:flex; justify-content:space-between; font-size:13px; padding-bottom:8px; border-bottom:1px solid var(--border);}
+  .side-row:last-child{border-bottom:none; padding-bottom:0;}
+  .side-row .k{color:var(--sage);}
+  .side-row .v{font-weight:700; color:var(--ink);}
+
+  /* related */
+  .related{background:var(--input-bg); padding:80px 0; border-top:1px solid var(--border);}
+  .rel-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:36px;}
+  .rel-card{background:var(--white); border:1px solid var(--border); border-radius:20px 6px 20px 6px; overflow:hidden; display:flex; flex-direction:column;}
+  .rel-img{aspect-ratio:16/9; background:var(--input-bg); overflow:hidden;}
+  .rel-img img{width:100%; height:100%; object-fit:cover;}
+  .rel-body{padding:20px; display:flex; flex-direction:column; gap:6px;}
+  .rel-body .tag{font-size:10.5px; font-weight:700; text-transform:uppercase; color:var(--rust); letter-spacing:0.04em;}
+  .rel-body h5{font-family:'Fraunces',serif; font-weight:700; font-size:17px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+
+  .cta-band{background:var(--ink); padding:72px 0; text-align:center;}
+  .cta-band h2{font-family:'Fraunces',serif; font-weight:700; font-size:36px; color:var(--white); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .cta-band p{color:rgba(255,255,255,0.75); margin-top:12px; font-size:15px;}
+  .cta-actions{display:flex; gap:16px; justify-content:center; margin-top:28px;}
+  .cta-band .btn-outline-dark{background:transparent; color:var(--white); border:1.5px solid var(--white);}
+  .cta-band .btn-outline-dark:hover{background:var(--white); color:var(--ink);}
+  .cta-band .btn-primary{background:var(--rust);}
+
+  footer{background:var(--ink); color:var(--white); padding:64px 0 0;}
+  .foot-top{display:flex; justify-content:space-between; gap:40px; padding-bottom:48px;}
+  .foot-brand{width:340px; display:flex; flex-direction:column; gap:16px;}
+  .foot-logo{display:flex; align-items:center; gap:8px;}
+  .foot-logo span{font-family:'Fraunces',serif; font-weight:900; font-size:20px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .foot-brand p{font-size:14px; opacity:0.7; line-height:1.5;}
+  .foot-links{display:flex; gap:64px;}
+  .foot-col{display:flex; flex-direction:column; gap:14px;}
+  .foot-col .head{font-weight:700; font-size:12px; text-transform:uppercase; color:#e8a583;}
+  .foot-col a{font-size:14px; opacity:0.8;}
+  .foot-col a:hover{opacity:1;}
+  .foot-line{height:1px; background:rgba(255,255,255,0.15);}
+  .foot-bottom{display:flex; justify-content:space-between; align-items:center; padding:22px 0; font-size:13px; opacity:0.6;}
+  .foot-social{display:flex; gap:16px;}
+
+  @media (max-width:1000px){
+    .wrap{padding:0 24px;}
+    nav.main-nav, header .btn-primary{display:none;}
+    .burger{display:flex;}
+    .page-hero{padding:56px 24px;}
+    .page-hero h1{font-size:30px;}
+    .page-hero-outer{padding:0;}
+    .page-hero{border-radius:0 0 32px 32px;}
+    .facts-inner{grid-template-columns:repeat(2,1fr); padding:20px 24px;}
+    .detail-layout{flex-direction:column; padding:56px 0; gap:40px;}
+    .detail-side{width:100%; position:static;}
+    .gallery-grid{grid-template-columns:1fr;}
+    .rel-grid{grid-template-columns:1fr;}
+    .foot-top{flex-direction:column; gap:32px;}
+    .foot-links{gap:40px;}
+    .foot-bottom{flex-direction:column; gap:12px; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo-group">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#1b4332" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M12 20V11" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">
+        <div class="l1">Sivakasi Green Forum</div>
+        <div class="l2">Environmental NGO</div>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="team.html">Our Team</a></li>
+        <li><a href="mission-vision.html">Mission &amp; Vision</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li class="has-drop">
+          <a href="projects-ongoing.html" class="active">Projects</a>
+          <div class="dropdown">
+            <a href="projects-completed.html">Completed Projects</a>
+            <a href="projects-ongoing.html">Ongoing Projects</a>
+            <a href="projects-upcoming.html">Upcoming Projects</a>
+          </div>
+        </li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+    <a href="join-us.html" class="btn btn-primary">Join Us Today</a>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="team.html">Our Team</a>
+    <a href="mission-vision.html">Mission &amp; Vision</a>
+    <a href="index.html#gallery">Gallery</a>
+    <div style="font-weight:700; color:var(--ink); margin-top:4px;">Projects:</div>
+    <div class="sub-links">
+      <a href="projects-completed.html">Completed Projects</a>
+      <a href="projects-ongoing.html">Ongoing Projects</a>
+      <a href="projects-upcoming.html">Upcoming Projects</a>
+    </div>
+    <a href="contact.html">Contact Us</a>
+    <a href="join-us.html" style="background:var(--ink); color:#fff; text-align:center; border-radius:8px; margin-top:8px;">Join Us Today</a>
+  </div>
+</header>
+
+<div class="page-hero-outer">
+  <section class="page-hero">
+    <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=1600&q=80" alt="Project cover image">
+    <div class="overlay"></div>
+    <div class="wrap page-hero-content" style="padding:0;">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a> <span>/</span>
+        <a href="projects-ongoing.html">Projects</a> <span>/</span>
+        <span id="detailBreadcrumbTitle">Delta Floodplain Reconnection</span>
+      </div>
+      <div class="status-row">
+        <span class="status-stamp-lg">Ongoing</span>
+        <span class="cat-label">Water Restoration · Sivakasi</span>
+      </div>
+      <h1 class="serif" id="detailProjectTitle">Delta Floodplain Reconnection</h1>
+      <p class="lede" id="detailProjectLede">Reconnecting 340 acres of historic floodplain to reduce flood risk downstream and rebuild the native wetland habitat.</p>
+    </div>
+  </section>
+</div>
+
+<div class="facts-strip">
+  <div class="facts-inner">
+    <div class="fact"><div class="lbl">Location</div><div class="val" id="factLocation">North Delta Region</div></div>
+    <div class="fact"><div class="lbl">Started</div><div class="val" id="factStarted">March 2025</div></div>
+    <div class="fact"><div class="lbl">Est. Completion</div><div class="val" id="factCompleted">Dec 2026</div></div>
+    <div class="fact"><div class="lbl">Category</div><div class="val" id="factCategory">Water Restoration</div></div>
+    <div class="fact"><div class="lbl">Status</div><div class="val" id="factProgress">Ongoing (65%)</div></div>
+  </div>
+</div>
+
+<section class="wrap detail-layout">
+  <div class="detail-main">
+    <div class="detail-section">
+      <h3>Project Overview</h3>
+      <p id="detailDescription">For four decades, a disconnected levee cut off 340 acres of natural floodplain from the catchment channel. SGF is reopening this connection in phased breaches to allow seasonal waters to nourish aquifers.</p>
+    </div>
+
+    <div class="detail-section">
+      <h3>Key Objectives</h3>
+      <ul class="obj-list" id="detailObjectivesList">
+        <li><span class="obj-check">✓</span> Reconnect 340 acres of historic floodplain to the channel</li>
+        <li><span class="obj-check">✓</span> Reduce peak monsoon flood levels for 3 downstream villages</li>
+        <li><span class="obj-check">✓</span> Re-establish native wetland vegetation and nursery grounds</li>
+      </ul>
+    </div>
+
+    <div class="detail-section">
+      <h3>Progress &amp; Status</h3>
+      <div class="progress-block">
+        <div class="progress-top"><span>Overall completion</span><span id="detailProgressNum">65%</span></div>
+        <div class="progress-track"><div class="progress-fill" id="detailProgressFill" style="width:65%;"></div></div>
+      </div>
+    </div>
+
+    <div class="detail-section">
+      <h3>Photo Gallery</h3>
+      <div class="gallery-grid" id="detailGalleryGrid">
+        <img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=700&q=80" alt="Field restoration work">
+        <img src="https://images.unsplash.com/photo-1500673922987-e212871fec22?w=700&q=80" alt="Volunteer planting day">
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-side">
+    <div class="side-card side-cta">
+      <h4 class="serif">Get Involved</h4>
+      <p>Volunteer planting days and survey sessions are organized regularly. Lend a hand on this project.</p>
+      <a href="join-us.html" class="btn btn-primary">Volunteer for This Project</a>
+    </div>
+    <div class="side-card">
+      <h4 class="serif">Project Details</h4>
+      <div class="side-row"><span class="k">Status</span><span class="v" id="sideStatus">Ongoing</span></div>
+      <div class="side-row"><span class="k">Category</span><span class="v" id="sideTag">Water Restoration</span></div>
+      <div class="side-row"><span class="k">Location</span><span class="v" id="sideLocation">Sivakasi</span></div>
+      <div class="side-row"><span class="k">Progress</span><span class="v" id="sideProgress">65%</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="related">
+  <div class="wrap">
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <span class="eyebrow">Keep Exploring</span>
+      <h2 class="serif" style="font-size:32px; color:var(--ink);">Related Projects</h2>
+    </div>
+    <div class="rel-grid" id="detailRelatedGrid">
+      <!-- Dynamically filled -->
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2 class="serif">Ready to lend a hand?</h2>
+    <p>This project — and every one like it — runs on volunteers and community support.</p>
+    <div class="cta-actions">
+      <a href="join-us.html" class="btn btn-primary">Join Us Today</a>
+      <a href="projects-ongoing.html" class="btn btn-outline-dark">Back to Projects</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-top">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#F2EFE6" stroke-width="1.6"/><path d="M12 20V11" stroke="#F2EFE6" stroke-width="1.6"/></svg>
+        <span class="serif">Sivakasi Green Forum</span>
+      </div>
+      <p>A Community who loves Nature and Its creations. Working towards water preservation and sustainable forestry.</p>
+    </div>
+    <div class="foot-links">
+      <div class="foot-col">
+        <span class="head">Navigation</span>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="team.html">Our Team</a>
+        <a href="mission-vision.html">Mission &amp; Vision</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Ecosystem</span>
+        <a href="projects-completed.html">Completed Projects</a>
+        <a href="projects-ongoing.html">Ongoing Projects</a>
+        <a href="projects-upcoming.html">Upcoming Projects</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Admin</span>
+        <a href="admin-login.html">Admin Login</a>
+        <a href="join-us.html">Volunteer Portal</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-line"></div>
+  <div class="wrap foot-bottom">
+    <span>Copyright © reserved by Sivakasi Green Forum</span>
+    <div class="foot-social">
+      <span>Instagram</span><span>Facebook</span><span>X</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+  }
+
+  async function loadProjectDetail() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('slug') || 'delta-floodplain-reconnection';
+
+    try {
+      const res = await fetch(`/api/projects/${encodeURIComponent(slug)}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      const p = data.project;
+      if (!p) return;
+
+      document.title = `${p.title} — Sivakasi Green Forum`;
+
+      const heroTitle = document.getElementById('detailProjectTitle');
+      if (heroTitle) heroTitle.textContent = p.title;
+
+      const heroLede = document.getElementById('detailProjectLede');
+      if (heroLede) heroLede.textContent = p.short_description || p.description || '';
+
+      const heroImg = document.querySelector('.page-hero img');
+      if (heroImg && p.cover_image) heroImg.src = p.cover_image;
+
+      const breadcrumbLast = document.getElementById('detailBreadcrumbTitle');
+      if (breadcrumbLast) breadcrumbLast.textContent = p.title;
+
+      const statusStamp = document.querySelector('.status-stamp-lg');
+      if (statusStamp) {
+        statusStamp.textContent = p.category ? (p.category.charAt(0).toUpperCase() + p.category.slice(1)) : 'Active';
+        if (p.category === 'completed') statusStamp.style.background = 'var(--ink)';
+        else if (p.category === 'upcoming') statusStamp.style.background = 'var(--gold, #b37d2f)';
+        else statusStamp.style.background = 'var(--rust)';
+      }
+
+      const catLabel = document.querySelector('.cat-label');
+      if (catLabel) catLabel.textContent = `${p.project_category_tag || 'Restoration'} · ${p.location || 'Sivakasi'}`;
+
+      // Facts Strip
+      const startStr = p.start_date ? new Date(p.start_date).toLocaleDateString('en-US', { month:'short', year:'numeric' }) : '—';
+      const endStr = p.end_date ? new Date(p.end_date).toLocaleDateString('en-US', { month:'short', year:'numeric' }) : (p.expected_completion_date ? new Date(p.expected_completion_date).toLocaleDateString('en-US', { month:'short', year:'numeric' }) : '—');
+      
+      document.getElementById('factLocation').textContent = p.location || 'Sivakasi';
+      document.getElementById('factStarted').textContent = startStr;
+      document.getElementById('factCompleted').textContent = endStr;
+      document.getElementById('factCategory').textContent = p.project_category_tag || 'Restoration';
+      document.getElementById('factProgress').textContent = `${p.category.toUpperCase()} (${p.progress || 0}%)`;
+
+      // Sidebar
+      document.getElementById('sideStatus').textContent = p.category ? (p.category.charAt(0).toUpperCase() + p.category.slice(1)) : 'Active';
+      document.getElementById('sideTag').textContent = p.project_category_tag || 'Restoration';
+      document.getElementById('sideLocation').textContent = p.location || 'Sivakasi';
+      document.getElementById('sideProgress').textContent = `${p.progress || 0}%`;
+
+      // Overview
+      const overviewP = document.getElementById('detailDescription');
+      if (overviewP) overviewP.textContent = p.description || p.short_description || '';
+
+      // Objectives
+      const objList = document.getElementById('detailObjectivesList');
+      if (objList && Array.isArray(p.objectives) && p.objectives.length > 0) {
+        objList.innerHTML = p.objectives.map(obj => `
+          <li><span class="obj-check">✓</span> ${obj}</li>
+        `).join('');
+      }
+
+      // Progress
+      const progressTrack = document.getElementById('detailProgressFill');
+      const progressNum = document.getElementById('detailProgressNum');
+      if (progressTrack) progressTrack.style.width = `${p.progress || 0}%`;
+      if (progressNum) progressNum.textContent = `${p.progress || 0}%`;
+
+      // Gallery
+      const galleryGrid = document.getElementById('detailGalleryGrid');
+      if (galleryGrid && Array.isArray(p.gallery) && p.gallery.length > 0) {
+        galleryGrid.innerHTML = p.gallery.map(imgUrl => `
+          <img src="${imgUrl}" alt="${p.title}" loading="lazy">
+        `).join('');
+      }
+
+      // Related
+      if (data.related && data.related.length > 0) {
+        const relGrid = document.getElementById('detailRelatedGrid');
+        if (relGrid) {
+          relGrid.innerHTML = data.related.map(r => `
+            <a href="project-detail.html?slug=${encodeURIComponent(r.slug)}" class="rel-card">
+              <div class="rel-img"><img src="${r.cover_image || 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=500&q=80'}" alt="${r.title}"></div>
+              <div class="rel-body"><span class="tag">${r.category}</span><h5>${r.title}</h5></div>
+            </a>
+          `).join('');
+        }
+      }
+
+    } catch (err) {
+      console.warn('Could not load dynamic project details:', err);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadProjectDetail);
+</script>
+
+</body>
+</html>

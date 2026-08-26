@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Sivakasi Green Forum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b4332; --sage:#556b5c; --body:#1c2521; --border:#d2dbd3;
+    --rust:#c25e30; --input-bg:#f7f4ef; --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--white); color:var(--body); font-family:'Figtree',sans-serif; font-size:16px; line-height:1.6;}
+  .serif{font-family:'Fraunces',serif; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{list-style:none;}
+  .wrap{max-width:1440px; margin:0 auto; padding:0 80px;}
+  .eyebrow{font-weight:700; font-size:14px; text-transform:uppercase; color:var(--rust); letter-spacing:0.01em;}
+  section{width:100%;}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; padding:14px 28px; font-weight:700; font-size:15px;
+    border-top-left-radius:18px; border-top-right-radius:6px; border-bottom-right-radius:18px; border-bottom-left-radius:6px;
+    cursor:pointer; border:none; transition:opacity .15s ease, background .15s ease;}
+  .btn-primary{background:var(--ink); color:var(--white);}
+  .btn-primary:hover{opacity:0.9;}
+  .btn-outline-dark{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .btn-outline-dark:hover{background:var(--ink); color:var(--white);}
+
+  header{position:sticky; top:0; z-index:100; background:var(--white); border-bottom:1px solid var(--border);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:20px 0;}
+  .logo-group{display:flex; align-items:center; gap:12px;}
+  .logo-text .l1{font-family:'Fraunces',serif; font-weight:900; font-size:20px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .logo-text .l2{font-weight:600; font-size:11px; color:var(--sage); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;}
+  nav.main-nav ul{display:flex; align-items:center; gap:28px; font-size:14px;}
+  nav.main-nav a{color:var(--sage); font-weight:500;}
+  nav.main-nav a.active{color:var(--ink); font-weight:700;}
+  nav.main-nav a:hover{color:var(--ink);}
+  nav.main-nav li.has-drop{position:relative;}
+  .dropdown{position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px);
+    background:var(--white); border:1px solid var(--border); min-width:190px; border-radius:8px; overflow:hidden;
+    opacity:0; visibility:hidden; transition:all .18s ease; box-shadow:0 12px 24px rgba(27,67,50,0.08);}
+  li.has-drop:hover .dropdown{opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);}
+  .dropdown a{display:block; padding:11px 16px; font-size:13.5px; border-bottom:1px solid var(--border);}
+  .dropdown a:last-child{border-bottom:none;}
+  .dropdown a:hover{background:var(--input-bg);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{width:22px; height:2px; background:var(--ink);}
+
+  .mobile-menu{
+    display:none; flex-direction:column; background:var(--white); border-bottom:1px solid var(--border); padding:20px 24px; gap:14px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:15px; font-weight:600; color:var(--ink); padding:8px 0; border-bottom:1px solid var(--input-bg);}
+  .mobile-menu .sub-links{display:flex; flex-direction:column; padding-left:14px; gap:8px;}
+  .mobile-menu .sub-links a{font-size:13.5px; color:var(--sage); border-bottom:none; padding:4px 0;}
+
+  .page-hero-outer{padding:24px 24px 0;}
+  .page-hero{position:relative; border-radius:0 0 40px 40px; overflow:hidden; padding:88px 80px; background:#2b4a3a;}
+  .page-hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+  .page-hero .overlay{position:absolute; inset:0; background:rgba(27,67,50,0.6); z-index:1;}
+  .page-hero-content{position:relative; z-index:2; max-width:760px;}
+  .page-hero .eyebrow{color:#e8a583;}
+  .page-hero h1{font-size:48px; font-weight:900; color:var(--white); line-height:1.15; margin-top:12px;}
+  .page-hero p{font-size:17px; color:var(--white); opacity:0.9; margin-top:16px; max-width:600px;}
+  .breadcrumb{display:flex; gap:8px; font-size:13px; color:rgba(255,255,255,0.7); margin-bottom:16px;}
+  .breadcrumb a:hover{color:var(--white);}
+
+  .section-header{display:flex; flex-direction:column; gap:12px;}
+  .section-header h2{font-family:'Fraunces',serif; font-weight:700; font-size:38px; color:var(--ink); line-height:1.2; font-variation-settings:'SOFT' 0,'WONK' 1;}
+
+  .quick-tiles{padding:0 24px;}
+  .quick-inner{
+    max-width:1392px; margin:-40px auto 0; display:grid; grid-template-columns:repeat(3,1fr); gap:20px; position:relative; z-index:5;
+  }
+  .quick-tile{
+    background:var(--white); border:1px solid var(--border); box-shadow:0 12px 24px rgba(27,67,50,0.06);
+    border-radius:20px 8px 20px 8px; padding:26px; display:flex; gap:16px; align-items:flex-start;
+  }
+  .quick-icon{width:44px; height:44px; border-radius:13px; background:var(--input-bg); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .quick-tile .lbl{font-size:11px; font-weight:700; text-transform:uppercase; color:var(--rust); letter-spacing:0.04em; margin-bottom:4px;}
+  .quick-tile .val{font-size:14.5px; font-weight:600; color:var(--ink); line-height:1.5;}
+
+  .contact-layout{display:flex; gap:64px; padding:96px 0; align-items:flex-start;}
+  .contact-info{flex:1; display:flex; flex-direction:column; gap:32px;}
+  .contact-info p{color:var(--sage); font-size:15px; line-height:1.7;}
+  .map-box{width:100%; height:280px; border-radius:20px 8px 20px 8px; overflow:hidden; background:var(--input-bg); border:1px solid var(--border);}
+  .map-box img{width:100%; height:100%; object-fit:cover;}
+  .socials{display:flex; gap:12px;}
+  .social-chip{width:44px; height:44px; border-radius:13px; background:var(--white); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--ink);}
+  .social-chip:hover{background:var(--input-bg);}
+  .office-hours{background:var(--input-bg); border-radius:16px; padding:24px; display:flex; flex-direction:column; gap:10px;}
+  .office-hours h4{font-size:14px; font-weight:700; color:var(--ink); margin-bottom:4px;}
+  .oh-row{display:flex; justify-content:space-between; font-size:13.5px; color:var(--sage);}
+  .oh-row .day{color:var(--ink); font-weight:600;}
+
+  .contact-form-card{
+    flex:1.2; background:var(--white); border:1px solid var(--border);
+    border-radius:32px 8px 32px 8px; box-shadow:0 8px 12px rgba(27,67,50,0.02);
+    padding:44px;
+  }
+  .contact-form-card h3{font-family:'Fraunces',serif; font-weight:700; font-size:26px; color:var(--ink); margin-bottom:24px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:8px; margin-bottom:16px;}
+  .field label{font-weight:600; font-size:13px; color:var(--ink);}
+  .field label .req{color:var(--rust);}
+  .field input, .field select, .field textarea{
+    background:var(--input-bg); border:1px solid var(--border); border-radius:8px;
+    padding:0 16px; height:46px; font-family:'Figtree',sans-serif; font-size:14px; color:var(--body);
+  }
+  .field select{appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23556b5c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center;}
+  .field textarea{padding:14px 16px; height:130px; resize:none;}
+  .field input::placeholder, .field textarea::placeholder{color:#8a9a8f;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--ink); outline-offset:1px;}
+  .contact-form-card .btn{width:100%; margin-top:4px;}
+
+  .success-msg{display:none; text-align:center; padding:40px 0;}
+  .success-icon{width:64px; height:64px; border-radius:50%; background:var(--ink); color:var(--white); display:flex; align-items:center; justify-content:center; font-size:28px; margin:0 auto 20px;}
+  .success-msg h3{font-family:'Fraunces',serif; font-weight:700; font-size:22px; color:var(--ink); margin-bottom:10px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .success-msg p{color:var(--sage); font-size:14.5px;}
+
+  .faq{border-top:1px solid var(--border); background:var(--input-bg); padding:80px 0;}
+  .faq-list{display:flex; flex-direction:column; gap:0; margin-top:40px; max-width:820px;}
+  .faq-item{border-bottom:1px solid var(--border); padding:22px 0;}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-item h5{font-size:16px; font-weight:700; color:var(--ink); margin-bottom:8px;}
+  .faq-item p{font-size:14.5px; color:var(--sage); line-height:1.6;}
+
+  footer{background:var(--ink); color:var(--white); padding:64px 0 0;}
+  .foot-top{display:flex; justify-content:space-between; gap:40px; padding-bottom:48px;}
+  .foot-brand{width:340px; display:flex; flex-direction:column; gap:16px;}
+  .foot-logo{display:flex; align-items:center; gap:8px;}
+  .foot-logo span{font-family:'Fraunces',serif; font-weight:900; font-size:20px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .foot-brand p{font-size:14px; opacity:0.7; line-height:1.5;}
+  .foot-links{display:flex; gap:64px;}
+  .foot-col{display:flex; flex-direction:column; gap:14px;}
+  .foot-col .head{font-weight:700; font-size:12px; text-transform:uppercase; color:#e8a583;}
+  .foot-col a{font-size:14px; opacity:0.8;}
+  .foot-col a:hover{opacity:1;}
+  .foot-line{height:1px; background:rgba(255,255,255,0.15);}
+  .foot-bottom{display:flex; justify-content:space-between; align-items:center; padding:22px 0; font-size:13px; opacity:0.6;}
+  .foot-social{display:flex; gap:16px;}
+
+  @media (max-width:1000px){
+    .wrap{padding:0 24px;}
+    nav.main-nav, header .btn-primary{display:none;}
+    .burger{display:flex;}
+    .page-hero{padding:56px 24px;}
+    .page-hero h1{font-size:32px;}
+    .page-hero-outer{padding:0;}
+    .page-hero{border-radius:0 0 32px 32px;}
+    .quick-tiles{padding:0 24px;}
+    .quick-inner{grid-template-columns:1fr; margin-top:-24px;}
+    .contact-layout{flex-direction:column; padding:64px 0; gap:32px;}
+    .contact-form-card{width:100%; box-sizing:border-box; padding:28px;}
+    .form-row{grid-template-columns:1fr;}
+    .faq{padding:56px 0;}
+    .foot-top{flex-direction:column; gap:32px;}
+    .foot-links{gap:40px;}
+    .foot-bottom{flex-direction:column; gap:12px; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo-group">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#1b4332" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M12 20V11" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">
+        <div class="l1">Sivakasi Green Forum</div>
+        <div class="l2">Environmental NGO</div>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="team.html">Our Team</a></li>
+        <li><a href="mission-vision.html">Mission &amp; Vision</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li class="has-drop">
+          <a href="projects-ongoing.html">Projects</a>
+          <div class="dropdown">
+            <a href="projects-completed.html">Completed Projects</a>
+            <a href="projects-ongoing.html">Ongoing Projects</a>
+            <a href="projects-upcoming.html">Upcoming Projects</a>
+          </div>
+        </li>
+        <li><a href="contact.html" class="active">Contact Us</a></li>
+      </ul>
+    </nav>
+    <a href="join-us.html" class="btn btn-primary">Join Us Today</a>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="team.html">Our Team</a>
+    <a href="mission-vision.html">Mission &amp; Vision</a>
+    <a href="index.html#gallery">Gallery</a>
+    <div style="font-weight:700; color:var(--ink); margin-top:4px;">Projects:</div>
+    <div class="sub-links">
+      <a href="projects-completed.html">Completed Projects</a>
+      <a href="projects-ongoing.html">Ongoing Projects</a>
+      <a href="projects-upcoming.html">Upcoming Projects</a>
+    </div>
+    <a href="contact.html">Contact Us</a>
+    <a href="join-us.html" style="background:var(--ink); color:#fff; text-align:center; border-radius:8px; margin-top:8px;">Join Us Today</a>
+  </div>
+</header>
+
+<div class="page-hero-outer">
+  <section class="page-hero">
+    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=1600&q=80" alt="Office and field surroundings">
+    <div class="overlay"></div>
+    <div class="wrap page-hero-content" style="padding:0;">
+      <div class="breadcrumb"><a href="index.html">Home</a> <span>/</span> <span>Contact Us</span></div>
+      <span class="eyebrow">Reach Out</span>
+      <h1 class="serif">Get in touch with us.</h1>
+      <p>Questions about a project, a partnership, or just want to say hello — our team usually replies within 2 working days.</p>
+    </div>
+  </section>
+</div>
+
+<div class="quick-tiles">
+  <div class="quick-inner">
+    <div class="quick-tile">
+      <div class="quick-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z" stroke="#1b4332" stroke-width="1.7"/><circle cx="12" cy="9.5" r="2.4" stroke="#1b4332" stroke-width="1.7"/></svg></div>
+      <div><div class="lbl">Address</div><div class="val">15, Thiruthangal Road, Sivakasi, 626 123, Tamil Nadu, India</div></div>
+    </div>
+    <div class="quick-tile">
+      <div class="quick-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5c0 8.28 6.72 15 15 15l3-4-6-3-2 2c-2-1-4-3-5-5l2-2-3-6-4 3Z" stroke="#1b4332" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+      <div><div class="lbl">Phone</div><div class="val">+91 77085 36365</div></div>
+    </div>
+    <div class="quick-tile">
+      <div class="quick-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#1b4332" stroke-width="1.6"/><path d="M3 6l9 7 9-7" stroke="#1b4332" stroke-width="1.6"/></svg></div>
+      <div><div class="lbl">Email</div><div class="val">sivakasigreenforum@gmail.com</div></div>
+    </div>
+  </div>
+</div>
+
+<section class="wrap contact-layout">
+  <div class="contact-info">
+    <div class="section-header">
+      <span class="eyebrow">Visit or Write</span>
+      <h2 class="serif">Our Field Office</h2>
+    </div>
+    <p>Our office in Sivakasi doubles as a volunteer check-in point for nearby project sites. Drop by during office hours, or reach out by phone or email any time.</p>
+    <div class="map-box">
+      <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80" alt="Map location of Sivakasi Green Forum office">
+    </div>
+    <div class="office-hours">
+      <h4>Office Hours</h4>
+      <div class="oh-row"><span class="day">Monday – Friday</span><span>9:00 AM – 5:30 PM</span></div>
+      <div class="oh-row"><span class="day">Saturday</span><span>9:00 AM – 1:00 PM (field days)</span></div>
+      <div class="oh-row"><span class="day">Sunday</span><span>Closed</span></div>
+    </div>
+    <div class="socials">
+      <a href="https://twitter.com" target="_blank" rel="noopener" class="social-chip" title="Twitter / X">𝕏</a>
+      <a href="https://facebook.com" target="_blank" rel="noopener" class="social-chip" title="Facebook">f</a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-chip" title="Instagram">◎</a>
+      <a href="https://youtube.com" target="_blank" rel="noopener" class="social-chip" title="YouTube">▶</a>
+    </div>
+  </div>
+
+  <div class="contact-form-card">
+    <div id="contact-form-visible">
+      <h3 class="serif">Send Us a Message</h3>
+      <form id="contactForm">
+        <div class="form-row">
+          <div class="field">
+            <label>Name <span class="req">*</span></label>
+            <input type="text" name="name" placeholder="Your full name" required>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="+91 00000 00000">
+          </div>
+        </div>
+        <div class="field">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label>Subject <span class="req">*</span></label>
+          <select name="subject" required>
+            <option value="">Select a topic</option>
+            <option>General Inquiry</option>
+            <option>Project Question</option>
+            <option>Partnership / Sponsorship</option>
+            <option>Media / Press</option>
+            <option>Volunteer Question</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Message <span class="req">*</span></label>
+          <textarea name="message" placeholder="How can we help?" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">✓</div>
+      <h3 class="serif">Message sent!</h3>
+      <p>Thanks for reaching out — we'll get back to you within 2 working days.</p>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="wrap">
+    <div class="section-header" style="align-items:center; text-align:center;">
+      <span class="eyebrow" style="text-align:center;">Common Questions</span>
+      <h2 class="serif" style="text-align:center;">Before You Write In</h2>
+    </div>
+    <div class="faq-list" style="margin-left:auto; margin-right:auto;">
+      <div class="faq-item">
+        <h5>I want to volunteer — should I use this form or the Join Us page?</h5>
+        <p>Use the <a href="join-us.html" style="text-decoration:underline;">Join Us Today</a> page for volunteering, membership, and donations — it routes directly to our volunteer coordinator and gets a faster response.</p>
+      </div>
+      <div class="faq-item">
+        <h5>How quickly will I hear back?</h5>
+        <p>General inquiries through this form typically get a reply within 2 working days. Media and partnership requests may take slightly longer.</p>
+      </div>
+      <div class="faq-item">
+        <h5>Can I visit an active project site?</h5>
+        <p>Yes — most ongoing sites welcome visitors during scheduled volunteer days. Mention which project you're interested in and we'll share the next open date.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-top">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#F2EFE6" stroke-width="1.6"/><path d="M12 20V11" stroke="#F2EFE6" stroke-width="1.6"/></svg>
+        <span class="serif">Sivakasi Green Forum</span>
+      </div>
+      <p>A Community who loves Nature and Its creations. Working towards water preservation and sustainable forestry.</p>
+    </div>
+    <div class="foot-links">
+      <div class="foot-col">
+        <span class="head">Navigation</span>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="team.html">Our Team</a>
+        <a href="mission-vision.html">Mission &amp; Vision</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Ecosystem</span>
+        <a href="projects-completed.html">Completed Projects</a>
+        <a href="projects-ongoing.html">Ongoing Projects</a>
+        <a href="projects-upcoming.html">Upcoming Projects</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Admin</span>
+        <a href="admin-login.html">Admin Login</a>
+        <a href="join-us.html">Volunteer Portal</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-line"></div>
+  <div class="wrap foot-bottom">
+    <span>Copyright © reserved by Sivakasi Green Forum</span>
+    <div class="foot-social">
+      <span>Instagram</span><span>Facebook</span><span>X</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+  }
+
+  const contactForm = document.getElementById('contactForm');
+  contactForm.addEventListener('submit', async function(e){
+    e.preventDefault();
+    if (!this.checkValidity()) {
+      this.reportValidity();
+      return;
+    }
+    const btn = contactForm.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const formData = new FormData(contactForm);
+    const payload = {
+      name: formData.get('name'),
+      phone: formData.get('phone') || undefined,
+      email: formData.get('email'),
+      subject: formData.get('subject') || undefined,
+      message: formData.get('message')
+    };
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to submit');
+
+      document.getElementById('contact-form-visible').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } catch (err) {
+      alert('Error submitting message: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Send Message';
+    }
+  });
+</script>
+
+</body>
+</html>

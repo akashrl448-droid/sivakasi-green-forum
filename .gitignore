@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+*/node_modules/
+backend/backend/node_modules/
+
+# Environment variables
+.env
+.env.local
+*.env
+!*.env.example
+
+# SQLite database files and logs
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+backend/backend/db/*.db
+backend/backend/db/*.db-shm
+backend/backend/db/*.db-wal
+
+# Uploaded user media (keep folder structure)
+backend/backend/uploads/*
+!backend/backend/uploads/.gitkeep
+
+# IDE / Editor configuration
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+Thumbs.db

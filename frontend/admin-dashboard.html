@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — Sivakasi Green Forum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,900&family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b4332; --sage:#556b5c; --body:#1c2521; --border:#d2dbd3;
+    --rust:#c25e30; --input-bg:#f7f4ef; --white:#ffffff; --sidebar:#16362a;
+    --green-soft:#e7f0e9; --amber:#c9822a; --red:#b3402f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--input-bg); color:var(--body); font-family:'Figtree',sans-serif; font-size:14.5px; line-height:1.5;}
+  .serif{font-family:'Fraunces',serif; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit; text-decoration:none;}
+  button{font-family:inherit; cursor:pointer;}
+  input,select,textarea{font-family:inherit;}
+  img{max-width:100%; display:block;}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:11px 20px; font-weight:700; font-size:13.5px;
+    border-top-left-radius:14px; border-top-right-radius:5px; border-bottom-right-radius:14px; border-bottom-left-radius:5px;
+    cursor:pointer; border:none; transition:all .15s ease;}
+  .btn-primary{background:var(--ink); color:var(--white);}
+  .btn-primary:hover{opacity:0.9; transform:translateY(-1px);}
+  .btn-primary:disabled{opacity:0.6; cursor:not-allowed; transform:none;}
+  .btn-outline{background:transparent; color:var(--ink); border:1.5px solid var(--border);}
+  .btn-outline:hover{border-color:var(--ink); background:var(--white);}
+  .btn-danger{background:transparent; color:var(--red); border:1.5px solid var(--red);}
+  .btn-danger:hover{background:var(--red); color:var(--white);}
+  .btn-sm{padding:6px 12px; font-size:12px; border-radius:8px;}
+
+  /* ---------- layout ---------- */
+  .admin-shell{display:flex; min-height:100vh;}
+
+  /* sidebar */
+  .sidebar{width:264px; background:var(--sidebar); color:var(--white); flex-shrink:0; display:flex; flex-direction:column; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:100;}
+  .sidebar-brand{padding:26px 24px; display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(255,255,255,0.1);}
+  .sidebar-brand .l1{font-family:'Fraunces',serif; font-weight:800; font-size:15.5px;}
+  .sidebar-brand .l2{font-size:10px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.08em; margin-top:1px;}
+  .sidebar-nav{flex:1; padding:20px 14px;}
+  .nav-group{margin-bottom:22px;}
+  .nav-group-label{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.09em; color:rgba(255,255,255,0.4); padding:0 12px; margin-bottom:8px;}
+  .nav-item{
+    display:flex; align-items:center; gap:11px; padding:10px 12px; border-radius:9px; font-size:13.5px; font-weight:500;
+    color:rgba(255,255,255,0.72); cursor:pointer; margin-bottom:2px; border:none; background:none; width:100%; text-align:left;
+  }
+  .nav-item:hover{background:rgba(255,255,255,0.06); color:var(--white);}
+  .nav-item.active{background:var(--rust); color:var(--white); font-weight:700;}
+  .nav-item svg{flex-shrink:0; opacity:0.85;}
+  .sidebar-foot{padding:16px 20px; border-top:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; gap:10px;}
+  .avatar-mini{width:34px; height:34px; border-radius:10px; background:var(--rust); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; flex-shrink:0;}
+  .sidebar-foot .name{font-size:12.5px; font-weight:600;}
+  .sidebar-foot .role{font-size:10.5px; color:rgba(255,255,255,0.5);}
+
+  /* main */
+  .main{flex:1; min-width:0;}
+  .topbar{background:var(--white); border-bottom:1px solid var(--border); padding:18px 36px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:10;}
+  .topbar h1{font-family:'Fraunces',serif; font-weight:800; font-size:22px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .topbar .sub{font-size:12.5px; color:var(--sage); margin-top:2px;}
+  .topbar-right{display:flex; align-items:center; gap:14px;}
+  .icon-btn{width:38px; height:38px; border-radius:10px; background:var(--input-bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative; cursor:pointer;}
+  .badge-dot{position:absolute; top:6px; right:6px; width:7px; height:7px; border-radius:50%; background:var(--rust);}
+
+  .view{display:none; padding:32px 36px 64px;}
+  .view.active{display:block;}
+
+  /* ---------- overview ---------- */
+  .stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:32px;}
+  .stat-card{background:var(--white); border:1px solid var(--border); border-radius:18px 6px 18px 6px; padding:22px; display:flex; flex-direction:column; gap:8px;}
+  .stat-card .top-row{display:flex; justify-content:space-between; align-items:flex-start;}
+  .stat-icon{width:38px; height:38px; border-radius:11px; background:var(--input-bg); display:flex; align-items:center; justify-content:center; font-size:18px;}
+  .stat-card .num{font-family:'Fraunces',serif; font-weight:900; font-size:32px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .stat-card .lbl{font-size:12.5px; color:var(--sage); font-weight:600;}
+  .stat-trend{font-size:11px; font-weight:700; padding:3px 8px; border-radius:100px;}
+  .trend-up{color:#2f7a4d; background:#e5f4ea;}
+
+  .panel-grid{display:grid; grid-template-columns:1.4fr 1fr; gap:24px;}
+  .panel{background:var(--white); border:1px solid var(--border); border-radius:20px 6px 20px 6px; padding:26px;}
+  .panel-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;}
+  .panel-head h3{font-family:'Fraunces',serif; font-weight:700; font-size:17px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .panel-head .see-all{font-size:12.5px; font-weight:700; color:var(--ink); cursor:pointer;}
+
+  .mini-row{display:flex; justify-content:space-between; align-items:center; padding:13px 0; border-bottom:1px solid var(--border); gap:14px;}
+  .mini-row:last-child{border-bottom:none;}
+  .mini-row .who{font-size:13.5px; font-weight:600; color:var(--ink);}
+  .mini-row .what{font-size:12px; color:var(--sage); margin-top:2px;}
+  .status-pill{font-size:10.5px; font-weight:700; text-transform:uppercase; padding:4px 10px; border-radius:100px; flex-shrink:0;}
+  .pill-new{background:#fbeee7; color:var(--rust);}
+  .pill-read{background:var(--input-bg); color:var(--sage);}
+
+  /* ---------- data tables (shared) ---------- */
+  .toolbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:16px; flex-wrap:wrap;}
+  .toolbar-left{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+  .search-box{position:relative;}
+  .search-box input{
+    background:var(--white); border:1px solid var(--border); border-radius:10px; padding:9px 14px 9px 14px; font-size:13px; width:240px;
+  }
+  .tab-pills{display:flex; gap:6px;}
+  .tab-pill{padding:8px 16px; border-radius:100px; font-size:12.5px; font-weight:600; color:var(--sage); border:1px solid var(--border); background:var(--white); cursor:pointer;}
+  .tab-pill.active{background:var(--ink); color:var(--white); border-color:var(--ink);}
+
+  .data-table{width:100%; background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; border-collapse:collapse;}
+  .data-table th{text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--sage); background:var(--input-bg); padding:13px 18px; border-bottom:1px solid var(--border);}
+  .data-table td{padding:14px 18px; border-bottom:1px solid var(--border); font-size:13.5px; vertical-align:middle;}
+  .data-table tr:last-child td{border-bottom:none;}
+  .data-table tr:hover td{background:rgba(247, 244, 239, 0.4);}
+  .row-thumb{width:48px; height:48px; border-radius:10px; object-fit:cover; background:var(--input-bg); border:1px solid var(--border);}
+  .cell-title{font-weight:700; color:var(--ink);}
+  .cell-sub{font-size:12px; color:var(--sage); margin-top:2px;}
+  .table-actions{display:flex; gap:8px;}
+  .icon-action{width:32px; height:32px; border-radius:8px; background:var(--input-bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px;}
+  .icon-action:hover{border-color:var(--ink); background:var(--white);}
+
+  .status-badge{font-size:10.5px; font-weight:700; text-transform:uppercase; padding:5px 11px; border-radius:100px; display:inline-block;}
+  .badge-completed{background:var(--green-soft); color:#2f7a4d;}
+  .badge-ongoing{background:#fbeee7; color:var(--rust);}
+  .badge-upcoming{background:#f3eee0; color:var(--amber);}
+  .badge-published{background:var(--green-soft); color:#2f7a4d;}
+  .badge-draft{background:var(--input-bg); color:var(--sage);}
+  .badge-new{background:#fbeee7; color:var(--rust);}
+  .badge-responded, .badge-reviewed, .badge-contacted{background:var(--green-soft); color:#2f7a4d;}
+
+  .toggle{width:38px; height:22px; border-radius:100px; background:var(--border); position:relative; cursor:pointer; flex-shrink:0; display:inline-block;}
+  .toggle.on{background:var(--ink);}
+  .toggle::after{content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--white); transition:transform .15s ease;}
+  .toggle.on::after{transform:translateX(16px);}
+
+  /* ---------- forms (add project / team / content) ---------- */
+  .form-card{background:var(--white); border:1px solid var(--border); border-radius:20px 6px 20px 6px; padding:30px; max-width:860px;}
+  .form-card h3{font-family:'Fraunces',serif; font-weight:700; font-size:19px; color:var(--ink); margin-bottom:22px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .field{display:flex; flex-direction:column; gap:7px; margin-bottom:18px;}
+  .field.full{grid-column:1/-1;}
+  .field label{font-size:12.5px; font-weight:700; color:var(--ink);}
+  .field input, .field select, .field textarea{
+    background:var(--input-bg); border:1px solid var(--border); border-radius:9px; padding:0 14px; height:44px; font-size:13.5px; color:var(--body);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--ink); outline-offset:1px;}
+  .field select{appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23556b5c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center;}
+  .field textarea{padding:12px 14px; height:100px; resize:vertical;}
+
+  /* Image Upload Box & Gallery Previews */
+  .upload-box{
+    border:2px dashed var(--border); border-radius:12px; padding:24px 16px; text-align:center; color:var(--sage);
+    font-size:13px; background:var(--input-bg); cursor:pointer; transition:all .2s ease; position:relative;
+  }
+  .upload-box:hover, .upload-box.dragover{border-color:var(--ink); background:rgba(27,67,50,0.03);}
+  .upload-box input[type="file"]{position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%;}
+  .upload-box .upload-icon{font-size:28px; margin-bottom:6px;}
+  .upload-box .upload-sub{font-size:11.5px; color:var(--sage); margin-top:4px; opacity:0.8;}
+
+  .img-preview-container{margin-top:12px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;}
+  .img-preview-card{
+    position:relative; width:100px; height:100px; border-radius:10px; overflow:hidden; border:1px solid var(--border);
+    background:var(--white); box-shadow:0 2px 6px rgba(0,0,0,0.05);
+  }
+  .img-preview-card img{width:100%; height:100%; object-fit:cover;}
+  .img-preview-card .remove-btn{
+    position:absolute; top:4px; right:4px; background:rgba(0,0,0,0.65); color:#fff; border:none;
+    border-radius:50%; width:22px; height:22px; font-size:13px; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; line-height:1;
+  }
+  .img-preview-card .remove-btn:hover{background:var(--red);}
+
+  .form-actions{display:flex; gap:12px; margin-top:12px;}
+
+  /* Toast Notification */
+  .toast{
+    position:fixed; bottom:28px; right:28px; background:var(--ink); color:#fff; padding:14px 22px;
+    border-radius:12px; box-shadow:0 12px 28px rgba(0,0,0,0.18); font-size:13.5px; font-weight:600;
+    display:flex; align-items:center; gap:10px; transform:translateY(100px); opacity:0; transition:all .25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index:9999; max-width:380px;
+  }
+  .toast.show{transform:translateY(0); opacity:1;}
+  .toast.error{background:var(--red);}
+  .toast.warning{background:var(--amber);}
+
+  /* Modal */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(22, 54, 42, 0.5); backdrop-filter:blur(3px);
+    display:none; align-items:center; justify-content:center; z-index:2000; padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-dialog{
+    background:var(--white); border-radius:20px; max-width:600px; width:100%; padding:28px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15); max-height:90vh; overflow-y:auto; position:relative;
+  }
+  .modal-dialog h3{font-family:'Fraunces',serif; font-size:20px; color:var(--ink); margin-bottom:16px;}
+  .modal-close{position:absolute; top:20px; right:20px; font-size:20px; background:none; border:none; cursor:pointer; color:var(--sage);}
+
+  @media (max-width:1100px){
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .panel-grid{grid-template-columns:1fr;}
+    .form-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:820px){
+    .sidebar{position:fixed; left:-264px; transition:left .2s ease;}
+    .sidebar.open{left:0;}
+    .topbar{padding:16px 20px;}
+    .view{padding:20px;}
+    .stat-grid{grid-template-columns:1fr 1fr;}
+    #menuToggle{display:flex !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="admin-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#F2EFE6" stroke-width="1.6"/><path d="M12 20V11" stroke="#F2EFE6" stroke-width="1.6"/></svg>
+      <div>
+        <div class="l1 serif">Sivakasi Green Forum</div>
+        <div class="l2">Admin Panel</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <button class="nav-item active" data-view="overview">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" stroke-width="1.6"/><rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" stroke-width="1.6"/></svg>
+          Overview
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Projects &amp; Media</div>
+        <button class="nav-item" data-view="projects">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          All Projects
+        </button>
+        <button class="nav-item" data-view="project-add" id="navAddProject">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Add / Post Project
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Team Members</div>
+        <button class="nav-item" data-view="team">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          All Team Members
+        </button>
+        <button class="nav-item" data-view="team-add" id="navAddTeam">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          Add Team Member
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Content</div>
+        <button class="nav-item" data-view="content">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M4 19V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Site Content
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Messages</div>
+        <button class="nav-item" data-view="messages">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          Contact Messages
+        </button>
+        <button class="nav-item" data-view="joins">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM20 8v6M23 11h-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Join Requests
+        </button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Account</div>
+        <button class="nav-item" data-view="account">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Profile &amp; Password
+        </button>
+        <button class="nav-item" id="logoutBtn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Logout
+        </button>
+      </div>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="avatar-mini" id="sidebarAvatar">A</div>
+      <div>
+        <div class="name" id="sidebarAdminName">Administrator</div>
+        <div class="role" id="sidebarAdminRole">super_admin</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="pageTitle" class="serif">Dashboard Overview</h1>
+        <div class="sub" id="pageSub">Welcome back — live statistics and controls for Sivakasi Green Forum.</div>
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn" onclick="document.getElementById('sidebar').classList.toggle('open')" style="display:none;" id="menuToggle">☰</button>
+        <a href="index.html" target="_blank" class="btn btn-outline btn-sm" title="View live website">🌐 View Public Site</a>
+        <div class="avatar-mini" id="topbarAvatar">A</div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div class="view active" id="view-overview">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">📁</div><span class="stat-trend trend-up">Active</span></div>
+          <div class="num serif" id="statTotalProjects">—</div><div class="lbl">Total Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">✅</div></div>
+          <div class="num serif" id="statCompletedProjects">—</div><div class="lbl">Completed Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">🚧</div></div>
+          <div class="num serif" id="statOngoingProjects">—</div><div class="lbl">Ongoing Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">📅</div></div>
+          <div class="num serif" id="statUpcomingProjects">—</div><div class="lbl">Upcoming Projects</div>
+        </div>
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">👥</div></div>
+          <div class="num serif" id="statTeamMembers">—</div><div class="lbl">Total Team Members</div>
+        </div>
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">✉️</div><span class="stat-trend trend-up" id="badgeContactNew">0 new</span></div>
+          <div class="num serif" id="statContactMessages">—</div><div class="lbl">New Contact Messages</div>
+        </div>
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">🙋</div><span class="stat-trend trend-up" id="badgeJoinNew">0 new</span></div>
+          <div class="num serif" id="statJoinRequests">—</div><div class="lbl">New Join Requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="top-row"><div class="stat-icon">🌳</div></div>
+          <div class="num serif">2,000+</div><div class="lbl">Trees Planted</div>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <div class="panel-head"><h3>Recent Join Requests</h3><span class="see-all" onclick="showView('joins')">See all →</span></div>
+          <div id="overviewJoinList">Loading…</div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Recent Messages</h3><span class="see-all" onclick="showView('messages')">See all →</span></div>
+          <div id="overviewContactList">Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS LIST -->
+    <div class="view" id="view-projects">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-box">
+            <input type="text" id="projectSearchInput" placeholder="🔍 Search projects by title or location...">
+          </div>
+          <div class="tab-pills">
+            <span class="tab-pill active" data-cat="all" onclick="filterProjectsTab('all', this)">All (<span id="countAllProj">0</span>)</span>
+            <span class="tab-pill" data-cat="completed" onclick="filterProjectsTab('completed', this)">Completed (<span id="countCompProj">0</span>)</span>
+            <span class="tab-pill" data-cat="ongoing" onclick="filterProjectsTab('ongoing', this)">Ongoing (<span id="countOngProj">0</span>)</span>
+            <span class="tab-pill" data-cat="upcoming" onclick="filterProjectsTab('upcoming', this)">Upcoming (<span id="countUpcProj">0</span>)</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="openProjectAdd()">+ Add Project</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:60px;">Cover</th>
+            <th>Project Title</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Progress</th>
+            <th>Status</th>
+            <th style="width:130px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="projectsTableBody">
+          <tr><td colspan="7" style="text-align:center; padding:30px; color:var(--sage);">Loading projects from database…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PROJECT ADD / EDIT -->
+    <div class="view" id="view-project-add">
+      <div class="form-card" style="max-width:920px;">
+        <h3 id="projectFormHeading">Add New Project</h3>
+        <form id="projectForm">
+          <input type="hidden" id="projId" value="">
+          
+          <div class="form-grid">
+            <div class="field full">
+              <label>Project Title *</label>
+              <input type="text" id="projTitle" placeholder="e.g. Vellaikulam Shoreline Stabilization & Afforestation" required>
+            </div>
+            <div class="field">
+              <label>Category *</label>
+              <select id="projCategory" required>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+                <option value="upcoming">Upcoming</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Publish Status *</label>
+              <select id="projStatus">
+                <option value="published">Published (Visible on public site)</option>
+                <option value="draft">Draft (Admin preview only)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Location</label>
+              <input type="text" id="projLocation" placeholder="e.g. Periyakulam, Sivakasi">
+            </div>
+            <div class="field">
+              <label>Project Category Tag</label>
+              <input type="text" id="projTag" placeholder="e.g. Water Restoration, Afforestation">
+            </div>
+            <div class="field">
+              <label>Display Order</label>
+              <input type="number" id="projOrder" value="0">
+            </div>
+            <div class="field">
+              <label>Progress (%)</label>
+              <input type="number" id="projProgress" min="0" max="100" value="0">
+            </div>
+            <div class="field">
+              <label>Start Date</label>
+              <input type="date" id="projStartDate">
+            </div>
+            <div class="field">
+              <label>Expected / Actual Completion Date</label>
+              <input type="date" id="projEndDate">
+            </div>
+          </div>
+
+          <div class="field full">
+            <label>Short Description (Shown on project cards)</label>
+            <textarea id="projShortDesc" placeholder="Brief summary of the eco-restoration project..."></textarea>
+          </div>
+
+          <div class="field full">
+            <label>Full Description (Shown on detail page)</label>
+            <textarea id="projDescription" style="height:140px;" placeholder="Full project scope, methodology, community involvement..."></textarea>
+          </div>
+
+          <div class="field full">
+            <label>Objectives (One per line)</label>
+            <textarea id="projObjectives" placeholder="Reconnect 340 acres of floodplain&#10;Reduce flood risk downstream&#10;Restore native wetland flora and fauna"></textarea>
+          </div>
+
+          <div class="field full">
+            <label>Impact / Ecological Outcomes</label>
+            <textarea id="projImpact" placeholder="e.g. Over 2,000 native saplings planted; groundwater levels improved by 1.8 meters across surrounding farm areas."></textarea>
+          </div>
+
+          <!-- Cover Image Upload -->
+          <div class="field full">
+            <label>Cover Image (Upload file or enter URL)</label>
+            <div class="upload-box" id="coverUploadBox">
+              <input type="file" id="coverFileInput" accept="image/jpeg,image/png,image/webp,image/gif">
+              <div class="upload-icon">📷</div>
+              <div><strong>Click to browse</strong> or drag &amp; drop cover image</div>
+              <div class="upload-sub">Supports JPG, PNG, WEBP up to 5MB</div>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:8px;">
+              <input type="text" id="projCoverImage" placeholder="Or paste direct image URL here (e.g. https://... or /uploads/...)" style="flex:1;">
+            </div>
+            <div id="coverPreviewContainer" class="img-preview-container"></div>
+          </div>
+
+          <!-- Gallery Images Upload -->
+          <div class="field full">
+            <label>Gallery Images (Upload multiple images for project slideshow)</label>
+            <div class="upload-box" id="galleryUploadBox">
+              <input type="file" id="galleryFileInput" multiple accept="image/jpeg,image/png,image/webp,image/gif">
+              <div class="upload-icon">🖼️</div>
+              <div><strong>Click to browse multiple images</strong> or drag &amp; drop</div>
+              <div class="upload-sub">Select up to 12 photos at once (JPG, PNG, WEBP up to 5MB each)</div>
+            </div>
+            <div id="galleryPreviewContainer" class="img-preview-container"></div>
+          </div>
+
+          <div class="field full">
+            <label>Video URL (Optional YouTube / Vimeo embed)</label>
+            <input type="url" id="projVideoUrl" placeholder="https://www.youtube.com/watch?v=...">
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="saveProjectBtn">Save &amp; Publish Project</button>
+            <button type="button" class="btn btn-outline" onclick="showView('projects')">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- TEAM LIST -->
+    <div class="view" id="view-team">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-box"><input type="text" id="teamSearchInput" placeholder="🔍 Search team members..."></div>
+        </div>
+        <button class="btn btn-primary" onclick="openTeamAdd()">+ Add Team Member</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:60px;">Photo</th>
+            <th>Name</th>
+            <th>Designation</th>
+            <th>Department</th>
+            <th>Order</th>
+            <th>Status</th>
+            <th style="width:130px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="teamTableBody">
+          <tr><td colspan="7" style="text-align:center; padding:30px; color:var(--sage);">Loading team members…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TEAM ADD / EDIT -->
+    <div class="view" id="view-team-add">
+      <div class="form-card">
+        <h3 id="teamFormHeading">Add Team Member</h3>
+        <form id="teamForm">
+          <input type="hidden" id="teamMemberId" value="">
+          
+          <div class="field full">
+            <label>Profile Photo</label>
+            <div class="upload-box" id="teamPhotoUploadBox">
+              <input type="file" id="teamPhotoFileInput" accept="image/jpeg,image/png,image/webp,image/gif">
+              <div class="upload-icon">👤</div>
+              <div><strong>Click to upload photo</strong> or drag &amp; drop</div>
+              <div class="upload-sub">JPG, PNG, WEBP (max 5MB)</div>
+            </div>
+            <div style="display:flex; gap:10px; margin-top:8px;">
+              <input type="text" id="teamImageUrl" placeholder="Or paste direct photo URL" style="flex:1;">
+            </div>
+            <div id="teamPhotoPreviewContainer" class="img-preview-container"></div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field"><label>Full Name *</label><input type="text" id="teamName" placeholder="e.g. Priya Natarajan" required></div>
+            <div class="field"><label>Designation *</label><input type="text" id="teamDesignation" placeholder="e.g. Volunteer Coordinator" required></div>
+            <div class="field"><label>Department / Role</label><input type="text" id="teamDepartment" placeholder="e.g. Leadership, Field Programs"></div>
+            <div class="field"><label>Display Order</label><input type="number" id="teamOrder" value="10"></div>
+          </div>
+
+          <div class="field full"><label>Short Biography</label><textarea id="teamBio" placeholder="A brief background shown on the Our Team page..."></textarea></div>
+
+          <div class="form-grid">
+            <div class="field"><label>LinkedIn URL</label><input type="url" id="teamLinkedin" placeholder="https://linkedin.com/in/..."></div>
+            <div class="field"><label>Email Address</label><input type="email" id="teamEmail" placeholder="name@sivakasigreenforum.org"></div>
+          </div>
+
+          <div class="field">
+            <label>Status</label>
+            <select id="teamStatus">
+              <option value="1">Published (Visible publicly)</option>
+              <option value="0">Draft (Hidden)</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="saveTeamBtn">Save Team Member</button>
+            <button type="button" class="btn btn-outline" onclick="showView('team')">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- SITE CONTENT -->
+    <div class="view" id="view-content">
+      <div class="form-card">
+        <h3>About Page Content</h3>
+        <form id="aboutContentForm">
+          <div class="field full"><label>Organization Introduction</label><textarea id="aboutIntro" style="height:110px;"></textarea></div>
+          <div class="field full"><label>History &amp; Background</label><textarea id="aboutHistory" style="height:110px;"></textarea></div>
+          <div class="form-actions"><button type="submit" class="btn btn-primary">Save About Content</button></div>
+        </form>
+      </div>
+
+      <div class="form-card" style="margin-top:24px;">
+        <h3>Mission, Vision &amp; Core Values</h3>
+        <form id="mvContentForm">
+          <div class="form-grid">
+            <div class="field full"><label>Mission Statement</label><textarea id="mvMission" style="height:90px;"></textarea></div>
+            <div class="field full"><label>Vision Statement</label><textarea id="mvVision" style="height:90px;"></textarea></div>
+          </div>
+          <div class="form-actions"><button type="submit" class="btn btn-primary">Save Mission &amp; Vision</button></div>
+        </form>
+      </div>
+
+      <div class="form-card" style="margin-top:24px;">
+        <h3>Contact Information</h3>
+        <form id="contactContentForm">
+          <div class="form-grid">
+            <div class="field full"><label>Office Address</label><input type="text" id="contactAddress"></div>
+            <div class="field"><label>Phone Number</label><input type="text" id="contactPhone"></div>
+            <div class="field"><label>Official Email</label><input type="email" id="contactEmail"></div>
+            <div class="field"><label>Map Latitude</label><input type="number" step="any" id="contactLat"></div>
+            <div class="field"><label>Map Longitude</label><input type="number" step="any" id="contactLng"></div>
+          </div>
+          <div class="form-actions"><button type="submit" class="btn btn-primary">Save Contact Details</button></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- CONTACT MESSAGES -->
+    <div class="view" id="view-messages">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-box"><input type="text" id="messageSearchInput" placeholder="🔍 Search messages..."></div>
+          <div class="tab-pills">
+            <span class="tab-pill active" onclick="filterMessages('all', this)">All</span>
+            <span class="tab-pill" onclick="filterMessages('new', this)">New</span>
+            <span class="tab-pill" onclick="filterMessages('read', this)">Read</span>
+            <span class="tab-pill" onclick="filterMessages('replied', this)">Replied</span>
+          </div>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>Contact</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="messagesTableBody">
+          <tr><td colspan="7" style="text-align:center; padding:30px; color:var(--sage);">Loading messages…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- JOIN REQUESTS -->
+    <div class="view" id="view-joins">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="search-box"><input type="text" id="joinSearchInput" placeholder="🔍 Search join requests..."></div>
+          <div class="tab-pills">
+            <span class="tab-pill active" onclick="filterJoins('all', this)">All</span>
+            <span class="tab-pill" onclick="filterJoins('new', this)">New</span>
+            <span class="tab-pill" onclick="filterJoins('reviewed', this)">Reviewed</span>
+            <span class="tab-pill" onclick="filterJoins('contacted', this)">Contacted</span>
+          </div>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>Interest</th>
+            <th>Location</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="joinsTableBody">
+          <tr><td colspan="8" style="text-align:center; padding:30px; color:var(--sage);">Loading join requests…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ACCOUNT / PROFILE -->
+    <div class="view" id="view-account">
+      <div class="form-card">
+        <h3>Admin Profile</h3>
+        <div class="form-grid">
+          <div class="field"><label>Name</label><input type="text" id="accName" disabled></div>
+          <div class="field"><label>Email</label><input type="email" id="accEmail" disabled></div>
+          <div class="field"><label>Role</label><input type="text" id="accRole" disabled></div>
+        </div>
+      </div>
+
+      <div class="form-card" style="margin-top:24px;">
+        <h3>Change Password</h3>
+        <form id="changePasswordForm">
+          <div class="form-grid">
+            <div class="field full"><label>Current Password *</label><input type="password" id="currentPass" required autocomplete="current-password"></div>
+            <div class="field"><label>New Password * (min 8 chars)</label><input type="password" id="newPass" required minlength="8" autocomplete="new-password"></div>
+            <div class="field"><label>Confirm New Password *</label><input type="password" id="confirmPass" required minlength="8" autocomplete="new-password"></div>
+          </div>
+          <div class="form-actions"><button type="submit" class="btn btn-primary" id="changePassBtn">Update Password</button></div>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Details Modal -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-dialog">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modalTitle">Details</h3>
+    <div id="modalBody" style="font-size:14px; line-height:1.6; color:var(--body);"></div>
+    <div style="margin-top:24px; display:flex; justify-content:flex-end; gap:10px;" id="modalActions">
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast element -->
+<div class="toast" id="toastBox">Notification message</div>
+
+<script>
+  /* ---------- CONFIG & API HELPERS ---------- */
+  const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') && window.location.port !== '4000'
+    ? 'http://localhost:4000'
+    : '';
+
+  function getFullImageUrl(url) {
+    if (!url) return '';
+    if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) return url;
+    if (url.startsWith('/')) return `${API_BASE}${url}`;
+    return `${API_BASE}/${url}`;
+  }
+
+  function getAuthHeaders() {
+    const token = localStorage.getItem('sgf_token');
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    return headers;
+  }
+
+  function getAuthFetchOpts(options = {}) {
+    const token = localStorage.getItem('sgf_token');
+    const opts = {
+      credentials: 'include',
+      ...options,
+      headers: {
+        ...(options.headers || {})
+      }
+    };
+    if (token) {
+      opts.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return opts;
+  }
+
+  // Toast notifier
+  function showToast(msg, type = 'success') {
+    const toast = document.getElementById('toastBox');
+    toast.textContent = (type === 'error' ? '❌ ' : type === 'warning' ? '⚠️ ' : '✅ ') + msg;
+    toast.className = `toast show ${type}`;
+    setTimeout(() => {
+      toast.className = 'toast';
+    }, 3600);
+  }
+
+  /* ---------- AUTH VERIFICATION ---------- */
+  async function checkAuth() {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/me`, getAuthFetchOpts());
+      if (!res.ok) throw new Error('Not authenticated');
+      const admin = await res.json();
+      
+      const initials = (admin.name || 'Admin').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('sidebarAvatar').textContent = initials;
+      document.getElementById('topbarAvatar').textContent = initials;
+      document.getElementById('sidebarAdminName').textContent = admin.name || 'Administrator';
+      document.getElementById('sidebarAdminRole').textContent = admin.role || 'super_admin';
+
+      document.getElementById('accName').value = admin.name || '';
+      document.getElementById('accEmail').value = admin.email || '';
+      document.getElementById('accRole').value = admin.role || 'super_admin';
+
+      loadDashboardData();
+    } catch (err) {
+      localStorage.removeItem('sgf_token');
+      localStorage.removeItem('sgf_admin');
+      window.location.href = 'admin-login.html';
+    }
+  }
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    try {
+      await fetch(`${API_BASE}/api/admin/logout`, getAuthFetchOpts({ method: 'POST' }));
+    } catch (e) {}
+    localStorage.removeItem('sgf_token');
+    localStorage.removeItem('sgf_admin');
+    window.location.href = 'admin-login.html';
+  });
+
+  /* ---------- NAVIGATION & VIEWS ---------- */
+  const titles = {
+    overview: ['Dashboard Overview', "Welcome back — live statistics and controls for Sivakasi Green Forum."],
+    content: ['Site Content', 'Edit the About, Mission & Vision, and Contact content shown publicly.'],
+    team: ['All Team Members', 'Manage everyone listed on the public Our Team page.'],
+    'team-add': ['Add Team Member', 'This member will appear on the public Our Team page once published.'],
+    projects: ['All Projects', 'Manage projects across Completed, Ongoing, and Upcoming categories.'],
+    'project-add': ['Add / Post Project', 'Choosing a category places this project on the matching public page automatically.'],
+    messages: ['Contact Messages', 'Incoming inquiries submitted through the public Contact form.'],
+    joins: ['Join Requests', 'Volunteers, memberships, and partner inquiries from Join Us form.'],
+    account: ['Account Settings', 'Manage your administrator profile and password.']
+  };
+
+  function showView(view) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById('view-' + view);
+    if (target) target.classList.add('active');
+    
+    document.querySelectorAll('.nav-item[data-view]').forEach(n => n.classList.remove('active'));
+    const navBtn = document.querySelector(`.nav-item[data-view="${view}"]`);
+    if (navBtn) navBtn.classList.add('active');
+
+    if (titles[view]) {
+      document.getElementById('pageTitle').textContent = titles[view][0];
+      document.getElementById('pageSub').textContent = titles[view][1];
+    }
+    document.getElementById('sidebar').classList.remove('open');
+    window.scrollTo(0,0);
+
+    // Refresh view specific data
+    if (view === 'overview') loadOverview();
+    if (view === 'projects') loadProjects();
+    if (view === 'team') loadTeam();
+    if (view === 'content') loadSiteContent();
+    if (view === 'messages') loadContactMessages();
+    if (view === 'joins') loadJoinRequests();
+  }
+
+  document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
+    btn.addEventListener('click', () => showView(btn.dataset.view));
+  });
+
+  function loadDashboardData() {
+    loadOverview();
+    loadProjects();
+    loadTeam();
+  }
+
+  /* ---------- OVERVIEW ---------- */
+  async function loadOverview() {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/dashboard-stats`, getAuthFetchOpts());
+      if (!res.ok) return;
+      const stats = await res.json();
+      document.getElementById('statTotalProjects').textContent = stats.totalProjects ?? 0;
+      document.getElementById('statCompletedProjects').textContent = stats.completedProjects ?? 0;
+      document.getElementById('statOngoingProjects').textContent = stats.ongoingProjects ?? 0;
+      document.getElementById('statUpcomingProjects').textContent = stats.upcomingProjects ?? 0;
+      document.getElementById('statTeamMembers').textContent = stats.totalTeamMembers ?? 0;
+      document.getElementById('statContactMessages').textContent = stats.newContactMessages ?? 0;
+      document.getElementById('statJoinRequests').textContent = stats.newJoinRequests ?? 0;
+      document.getElementById('badgeContactNew').textContent = `${stats.newContactMessages ?? 0} new`;
+      document.getElementById('badgeJoinNew').textContent = `${stats.newJoinRequests ?? 0} new`;
+    } catch (e) {
+      console.error(e);
+    }
+
+    // Load recent joins
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/join-requests/all`, getAuthFetchOpts());
+      if (res.ok) {
+        const { requests } = await res.json();
+        const container = document.getElementById('overviewJoinList');
+        if (!requests || requests.length === 0) {
+          container.innerHTML = '<div style="color:var(--sage); padding:10px 0;">No join requests yet.</div>';
+        } else {
+          container.innerHTML = requests.slice(0, 4).map(r => `
+            <div class="mini-row">
+              <div>
+                <div class="who">${escapeHtml(r.name)}</div>
+                <div class="what">Interested in: <strong>${escapeHtml(r.interest || 'General')}</strong> · ${escapeHtml(r.location || 'Sivakasi')}</div>
+              </div>
+              <span class="status-pill ${r.status === 'new' ? 'pill-new' : 'pill-read'}">${escapeHtml(r.status)}</span>
+            </div>
+          `).join('');
+        }
+      }
+    } catch (e) {}
+
+    // Load recent contact messages
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/contact-messages/all`, getAuthFetchOpts());
+      if (res.ok) {
+        const { messages } = await res.json();
+        const container = document.getElementById('overviewContactList');
+        if (!messages || messages.length === 0) {
+          container.innerHTML = '<div style="color:var(--sage); padding:10px 0;">No messages yet.</div>';
+        } else {
+          container.innerHTML = messages.slice(0, 4).map(m => `
+            <div class="mini-row">
+              <div>
+                <div class="who">${escapeHtml(m.name)}</div>
+                <div class="what">${escapeHtml(m.subject || m.message.substring(0, 45))}...</div>
+              </div>
+              <span class="status-pill ${m.status === 'new' ? 'pill-new' : 'pill-read'}">${escapeHtml(m.status)}</span>
+            </div>
+          `).join('');
+        }
+      }
+    } catch (e) {}
+  }
+
+  /* ---------- PROJECTS MANAGEMENT ---------- */
+  let allProjectsData = [];
+  let currentProjectCategory = 'all';
+
+  async function loadProjects() {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/projects/all`, getAuthFetchOpts());
+      if (!res.ok) throw new Error('Failed to fetch projects');
+      const data = await res.json();
+      allProjectsData = data.projects || [];
+      
+      // Update tab counts
+      document.getElementById('countAllProj').textContent = allProjectsData.length;
+      document.getElementById('countCompProj').textContent = allProjectsData.filter(p => p.category === 'completed').length;
+      document.getElementById('countOngProj').textContent = allProjectsData.filter(p => p.category === 'ongoing').length;
+      document.getElementById('countUpcProj').textContent = allProjectsData.filter(p => p.category === 'upcoming').length;
+
+      renderProjectsTable();
+    } catch (err) {
+      document.getElementById('projectsTableBody').innerHTML = `<tr><td colspan="7" style="color:var(--red); text-align:center; padding:20px;">Error: ${err.message}</td></tr>`;
+    }
+  }
+
+  function filterProjectsTab(cat, btn) {
+    currentProjectCategory = cat;
+    document.querySelectorAll('#view-projects .tab-pill').forEach(p => p.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderProjectsTable();
+  }
+
+  document.getElementById('projectSearchInput').addEventListener('input', () => {
+    renderProjectsTable();
+  });
+
+  function renderProjectsTable() {
+    const q = document.getElementById('projectSearchInput').value.toLowerCase().trim();
+    let filtered = allProjectsData;
+
+    if (currentProjectCategory !== 'all') {
+      filtered = filtered.filter(p => p.category === currentProjectCategory);
+    }
+    if (q) {
+      filtered = filtered.filter(p => 
+        (p.title && p.title.toLowerCase().includes(q)) ||
+        (p.location && p.location.toLowerCase().includes(q)) ||
+        (p.project_category_tag && p.project_category_tag.toLowerCase().includes(q))
+      );
+    }
+
+    const tbody = document.getElementById('projectsTableBody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--sage);">No projects found. Click "+ Add Project" to create one.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(p => {
+      const cover = p.cover_image 
+        ? getFullImageUrl(p.cover_image)
+        : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="%23d2dbd3"%3E%3Crect width="48" height="48"/%3E%3Ctext x="50%25" y="55%25" dominant-baseline="middle" text-anchor="middle" font-size="20"%3E🌳%3C/text%3E%3C/svg%3E';
+
+      const catBadge = p.category === 'completed' ? 'badge-completed' : p.category === 'ongoing' ? 'badge-ongoing' : 'badge-upcoming';
+      const isPub = p.status === 'published';
+
+      return `
+        <tr>
+          <td><img class="row-thumb" src="${cover}" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'48\\' height=\\'48\\' fill=\\'%23d2dbd3\\'%3E%3Crect width=\\'48\\' height=\\'48\\'/ %3E%3C/svg%3E'"></td>
+          <td>
+            <div class="cell-title">${escapeHtml(p.title)}</div>
+            <div class="cell-sub">${escapeHtml(p.project_category_tag || '')} · Slug: <code>${escapeHtml(p.slug)}</code></div>
+          </td>
+          <td><span class="status-badge ${catBadge}">${escapeHtml(p.category)}</span></td>
+          <td>${escapeHtml(p.location || '—')}</td>
+          <td><strong>${p.progress ?? 0}%</strong></td>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="toggle ${isPub ? 'on' : ''}" title="Click to toggle published status" onclick="toggleProjectPublish(${p.id})"></span>
+              <span class="status-badge ${isPub ? 'badge-published' : 'badge-draft'}">${isPub ? 'Published' : 'Draft'}</span>
+            </div>
+          </td>
+          <td>
+            <div class="table-actions">
+              <button class="icon-action" title="Edit project" onclick="editProject(${p.id})">✏️</button>
+              <button class="icon-action" title="Delete project" onclick="deleteProject(${p.id}, '${escapeHtml(p.title.replace(/'/g, "\\'"))}')">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function toggleProjectPublish(id) {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/projects/${id}/publish`, getAuthFetchOpts({ method: 'PATCH' }));
+      if (!res.ok) throw new Error('Failed to toggle status');
+      showToast('Project status updated!');
+      loadProjects();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  async function deleteProject(id, title) {
+    if (!confirm(`Are you sure you want to delete project: "${title}"? This cannot be undone.`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/projects/${id}`, getAuthFetchOpts({ method: 'DELETE' }));
+      if (!res.ok) throw new Error('Failed to delete project');
+      showToast(`Project "${title}" deleted successfully.`);
+      loadProjects();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  /* ---------- PROJECT ADD / EDIT FORM WITH IMAGE UPLOADS ---------- */
+  let currentGalleryImages = [];
+
+  function openProjectAdd() {
+    document.getElementById('projectForm').reset();
+    document.getElementById('projId').value = '';
+    document.getElementById('projectFormHeading').textContent = 'Add New Project';
+    document.getElementById('saveProjectBtn').textContent = 'Save & Publish Project';
+    document.getElementById('coverPreviewContainer').innerHTML = '';
+    document.getElementById('galleryPreviewContainer').innerHTML = '';
+    currentGalleryImages = [];
+    showView('project-add');
+  }
+
+  function editProject(id) {
+    const p = allProjectsData.find(x => x.id === id);
+    if (!p) return;
+
+    document.getElementById('projId').value = p.id;
+    document.getElementById('projectFormHeading').textContent = `Edit Project: ${p.title}`;
+    document.getElementById('saveProjectBtn').textContent = 'Update Project';
+
+    document.getElementById('projTitle').value = p.title || '';
+    document.getElementById('projCategory').value = p.category || 'ongoing';
+    document.getElementById('projStatus').value = p.status || 'published';
+    document.getElementById('projLocation').value = p.location || '';
+    document.getElementById('projTag').value = p.project_category_tag || '';
+    document.getElementById('projOrder').value = p.display_order ?? 0;
+    document.getElementById('projProgress').value = p.progress ?? 0;
+    document.getElementById('projStartDate').value = p.start_date || '';
+    document.getElementById('projEndDate').value = p.end_date || p.expected_completion_date || '';
+    document.getElementById('projShortDesc').value = p.short_description || '';
+    document.getElementById('projDescription').value = p.description || '';
+    
+    // Objectives array to newline
+    const objs = Array.isArray(p.objectives) ? p.objectives : (typeof p.objectives === 'string' ? JSON.parse(p.objectives || '[]') : []);
+    document.getElementById('projObjectives').value = objs.join('\n');
+    document.getElementById('projImpact').value = p.impact || '';
+    
+    // Cover Image
+    document.getElementById('projCoverImage').value = p.cover_image || '';
+    renderCoverPreview(p.cover_image);
+
+    // Gallery images
+    currentGalleryImages = Array.isArray(p.gallery) ? [...p.gallery] : (typeof p.gallery === 'string' ? JSON.parse(p.gallery || '[]') : []);
+    renderGalleryPreviews();
+
+    // Videos
+    const vids = Array.isArray(p.videos) ? p.videos : (typeof p.videos === 'string' ? JSON.parse(p.videos || '[]') : []);
+    document.getElementById('projVideoUrl').value = vids[0] || '';
+
+    showView('project-add');
+  }
+
+  function renderCoverPreview(url) {
+    const container = document.getElementById('coverPreviewContainer');
+    if (!url) {
+      container.innerHTML = '';
+      return;
+    }
+    const fullUrl = getFullImageUrl(url);
+    container.innerHTML = `
+      <div class="img-preview-card" style="width:140px; height:100px;">
+        <img src="${fullUrl}" alt="Cover preview">
+        <button type="button" class="remove-btn" onclick="removeCoverImage()">✕</button>
+      </div>
+      <div style="font-size:12px; color:var(--sage);">Cover image selected</div>
+    `;
+  }
+
+  function removeCoverImage() {
+    document.getElementById('projCoverImage').value = '';
+    document.getElementById('coverFileInput').value = '';
+    renderCoverPreview('');
+  }
+
+  function renderGalleryPreviews() {
+    const container = document.getElementById('galleryPreviewContainer');
+    if (currentGalleryImages.length === 0) {
+      container.innerHTML = '';
+      return;
+    }
+    container.innerHTML = currentGalleryImages.map((imgUrl, idx) => {
+      const fullUrl = getFullImageUrl(imgUrl);
+      return `
+        <div class="img-preview-card">
+          <img src="${fullUrl}" alt="Gallery item">
+          <button type="button" class="remove-btn" onclick="removeGalleryImage(${idx})">✕</button>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function removeGalleryImage(idx) {
+    currentGalleryImages.splice(idx, 1);
+    renderGalleryPreviews();
+  }
+
+  // Cover image file input change / drag & drop handler
+  document.getElementById('coverFileInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    await uploadSingleImage(file);
+  });
+
+  async function uploadSingleImage(file) {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const box = document.getElementById('coverUploadBox');
+    box.style.opacity = '0.5';
+    showToast('Uploading cover image…');
+
+    try {
+      const token = localStorage.getItem('sgf_token');
+      const headers = {};
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch(`${API_BASE}/api/admin/upload`, {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: formData
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to upload image');
+
+      document.getElementById('projCoverImage').value = data.url;
+      renderCoverPreview(data.url);
+      showToast('Cover image uploaded successfully!');
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      box.style.opacity = '1';
+    }
+  }
+
+  // Gallery multi-image upload handler
+  document.getElementById('galleryFileInput').addEventListener('change', async (e) => {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+
+    const formData = new FormData();
+    files.forEach(f => formData.append('images', f));
+
+    const box = document.getElementById('galleryUploadBox');
+    box.style.opacity = '0.5';
+    showToast(`Uploading ${files.length} gallery image(s)…`);
+
+    try {
+      const token = localStorage.getItem('sgf_token');
+      const headers = {};
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch(`${API_BASE}/api/admin/upload/gallery`, {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: formData
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to upload gallery images');
+
+      if (data.urls) {
+        currentGalleryImages.push(...data.urls);
+        renderGalleryPreviews();
+        showToast(`${data.urls.length} images added to gallery!`);
+      }
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      box.style.opacity = '1';
+      document.getElementById('galleryFileInput').value = '';
+    }
+  });
+
+  // Project form submit (Create or Update)
+  document.getElementById('projectForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveProjectBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving project…';
+
+    const id = document.getElementById('projId').value;
+    const title = document.getElementById('projTitle').value.trim();
+    const category = document.getElementById('projCategory').value;
+    const status = document.getElementById('projStatus').value;
+    const location = document.getElementById('projLocation').value.trim();
+    const projectCategoryTag = document.getElementById('projTag').value.trim();
+    const displayOrder = parseInt(document.getElementById('projOrder').value) || 0;
+    const progress = parseInt(document.getElementById('projProgress').value) || 0;
+    const startDate = document.getElementById('projStartDate').value || null;
+    const endDate = document.getElementById('projEndDate').value || null;
+    const shortDescription = document.getElementById('projShortDesc').value.trim();
+    const description = document.getElementById('projDescription').value.trim();
+    const objectives = document.getElementById('projObjectives').value.split('\n').map(s => s.trim()).filter(Boolean);
+    const impact = document.getElementById('projImpact').value.trim();
+    const coverImage = document.getElementById('projCoverImage').value.trim() || null;
+    const gallery = currentGalleryImages;
+    const video = document.getElementById('projVideoUrl').value.trim();
+    const videos = video ? [video] : [];
+
+    const payload = {
+      title,
+      category,
+      status,
+      location,
+      projectCategoryTag,
+      displayOrder,
+      progress,
+      startDate,
+      endDate: category === 'completed' ? endDate : null,
+      expectedCompletionDate: category !== 'completed' ? endDate : null,
+      shortDescription,
+      description,
+      objectives,
+      impact,
+      coverImage,
+      gallery,
+      videos
+    };
+
+    try {
+      const url = id ? `${API_BASE}/api/admin/projects/${id}` : `${API_BASE}/api/admin/projects`;
+      const method = id ? 'PUT' : 'POST';
+
+      const res = await fetch(url, getAuthFetchOpts({
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }));
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to save project');
+
+      showToast(id ? 'Project updated successfully!' : 'New project posted successfully!');
+      loadProjects();
+      showView('projects');
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = id ? 'Update Project' : 'Save & Publish Project';
+    }
+  });
+
+  /* ---------- TEAM MANAGEMENT ---------- */
+  let allTeamData = [];
+
+  async function loadTeam() {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/team/all`, getAuthFetchOpts());
+      if (!res.ok) throw new Error('Failed to fetch team members');
+      const data = await res.json();
+      allTeamData = data.team || [];
+      renderTeamTable();
+    } catch (err) {
+      document.getElementById('teamTableBody').innerHTML = `<tr><td colspan="7" style="color:var(--red); text-align:center; padding:20px;">Error: ${err.message}</td></tr>`;
+    }
+  }
+
+  document.getElementById('teamSearchInput').addEventListener('input', () => {
+    renderTeamTable();
+  });
+
+  function renderTeamTable() {
+    const q = document.getElementById('teamSearchInput').value.toLowerCase().trim();
+    let filtered = allTeamData;
+    if (q) {
+      filtered = filtered.filter(t => 
+        (t.name && t.name.toLowerCase().includes(q)) ||
+        (t.designation && t.designation.toLowerCase().includes(q)) ||
+        (t.department && t.department.toLowerCase().includes(q))
+      );
+    }
+
+    const tbody = document.getElementById('teamTableBody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--sage);">No team members found. Click "+ Add Team Member" to add one.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(t => {
+      const photo = t.image_url 
+        ? getFullImageUrl(t.image_url)
+        : 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="%23d2dbd3"%3E%3Ccircle cx="24" cy="24" r="24"/%3E%3Ctext x="50%25" y="55%25" dominant-baseline="middle" text-anchor="middle" font-size="20"%3E👤%3C/text%3E%3C/svg%3E';
+
+      const isPub = !!t.is_published;
+
+      return `
+        <tr>
+          <td><img class="row-thumb" style="border-radius:50%;" src="${photo}" alt="" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'48\\' height=\\'48\\' fill=\\'%23d2dbd3\\'%3E%3Ccircle cx=\\'24\\' cy=\\'24\\' r=\\'24\\'/ %3E%3C/svg%3E'"></td>
+          <td><div class="cell-title">${escapeHtml(t.name)}</div></td>
+          <td>${escapeHtml(t.designation)}</td>
+          <td>${escapeHtml(t.department || '—')}</td>
+          <td><strong>${t.display_order ?? 0}</strong></td>
+          <td>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="toggle ${isPub ? 'on' : ''}" title="Click to toggle publish status" onclick="toggleTeamPublish(${t.id})"></span>
+              <span class="status-badge ${isPub ? 'badge-published' : 'badge-draft'}">${isPub ? 'Published' : 'Draft'}</span>
+            </div>
+          </td>
+          <td>
+            <div class="table-actions">
+              <button class="icon-action" title="Edit team member" onclick="editTeamMember(${t.id})">✏️</button>
+              <button class="icon-action" title="Delete team member" onclick="deleteTeamMember(${t.id}, '${escapeHtml(t.name.replace(/'/g, "\\'"))}')">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function toggleTeamPublish(id) {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/team/${id}/publish`, getAuthFetchOpts({ method: 'PATCH' }));
+      if (!res.ok) throw new Error('Failed to toggle status');
+      showToast('Team member status updated!');
+      loadTeam();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  async function deleteTeamMember(id, name) {
+    if (!confirm(`Are you sure you want to remove ${name} from the team?`)) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/team/${id}`, getAuthFetchOpts({ method: 'DELETE' }));
+      if (!res.ok) throw new Error('Failed to delete team member');
+      showToast(`Team member ${name} deleted.`);
+      loadTeam();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  function openTeamAdd() {
+    document.getElementById('teamForm').reset();
+    document.getElementById('teamMemberId').value = '';
+    document.getElementById('teamFormHeading').textContent = 'Add Team Member';
+    document.getElementById('saveTeamBtn').textContent = 'Save Team Member';
+    document.getElementById('teamPhotoPreviewContainer').innerHTML = '';
+    showView('team-add');
+  }
+
+  function editTeamMember(id) {
+    const t = allTeamData.find(x => x.id === id);
+    if (!t) return;
+
+    document.getElementById('teamMemberId').value = t.id;
+    document.getElementById('teamFormHeading').textContent = `Edit Team Member: ${t.name}`;
+    document.getElementById('saveTeamBtn').textContent = 'Update Team Member';
+
+    document.getElementById('teamName').value = t.name || '';
+    document.getElementById('teamDesignation').value = t.designation || '';
+    document.getElementById('teamDepartment').value = t.department || '';
+    document.getElementById('teamOrder').value = t.display_order ?? 0;
+    document.getElementById('teamBio').value = t.biography || '';
+    document.getElementById('teamStatus').value = t.is_published ? '1' : '0';
+
+    document.getElementById('teamImageUrl').value = t.image_url || '';
+    renderTeamPhotoPreview(t.image_url);
+
+    const social = t.social_links || {};
+    document.getElementById('teamLinkedin').value = social.linkedin || '';
+    document.getElementById('teamEmail').value = social.email || '';
+
+    showView('team-add');
+  }
+
+  function renderTeamPhotoPreview(url) {
+    const container = document.getElementById('teamPhotoPreviewContainer');
+    if (!url) {
+      container.innerHTML = '';
+      return;
+    }
+    const fullUrl = getFullImageUrl(url);
+    container.innerHTML = `
+      <div class="img-preview-card" style="width:80px; height:80px; border-radius:50%;">
+        <img src="${fullUrl}" alt="Photo preview" style="border-radius:50%;">
+        <button type="button" class="remove-btn" onclick="removeTeamPhoto()">✕</button>
+      </div>
+      <div style="font-size:12px; color:var(--sage);">Photo selected</div>
+    `;
+  }
+
+  function removeTeamPhoto() {
+    document.getElementById('teamImageUrl').value = '';
+    document.getElementById('teamPhotoFileInput').value = '';
+    renderTeamPhotoPreview('');
+  }
+
+  document.getElementById('teamPhotoFileInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const box = document.getElementById('teamPhotoUploadBox');
+    box.style.opacity = '0.5';
+    showToast('Uploading photo…');
+
+    try {
+      const token = localStorage.getItem('sgf_token');
+      const headers = {};
+      if (token) headers['Authorization'] = `Bearer ${token}`;
+
+      const res = await fetch(`${API_BASE}/api/admin/upload`, {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: formData
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to upload photo');
+
+      document.getElementById('teamImageUrl').value = data.url;
+      renderTeamPhotoPreview(data.url);
+      showToast('Photo uploaded successfully!');
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      box.style.opacity = '1';
+    }
+  });
+
+  document.getElementById('teamForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('saveTeamBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    const id = document.getElementById('teamMemberId').value;
+    const name = document.getElementById('teamName').value.trim();
+    const designation = document.getElementById('teamDesignation').value.trim();
+    const department = document.getElementById('teamDepartment').value.trim();
+    const displayOrder = parseInt(document.getElementById('teamOrder').value) || 0;
+    const biography = document.getElementById('teamBio').value.trim();
+    const imageUrl = document.getElementById('teamImageUrl').value.trim() || null;
+    const isPublished = document.getElementById('teamStatus').value === '1';
+    const linkedin = document.getElementById('teamLinkedin').value.trim();
+    const email = document.getElementById('teamEmail').value.trim();
+
+    const payload = {
+      name,
+      designation,
+      department,
+      displayOrder,
+      biography,
+      imageUrl,
+      isPublished,
+      socialLinks: { linkedin, email }
+    };
+
+    try {
+      const url = id ? `${API_BASE}/api/admin/team/${id}` : `${API_BASE}/api/admin/team`;
+      const method = id ? 'PUT' : 'POST';
+
+      const res = await fetch(url, getAuthFetchOpts({
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }));
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to save team member');
+
+      showToast(id ? 'Team member updated!' : 'New team member added!');
+      loadTeam();
+      showView('team');
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = id ? 'Update Team Member' : 'Save Team Member';
+    }
+  });
+
+  /* ---------- SITE CONTENT ---------- */
+  async function loadSiteContent() {
+    try {
+      const res = await fetch(`${API_BASE}/api/content`, getAuthFetchOpts());
+      if (!res.ok) return;
+      const { content } = await res.json();
+
+      if (content.about) {
+        document.getElementById('aboutIntro').value = content.about.intro || '';
+        document.getElementById('aboutHistory').value = content.about.history || '';
+      }
+      if (content.mission_vision) {
+        document.getElementById('mvMission').value = content.mission_vision.mission || '';
+        document.getElementById('mvVision').value = content.mission_vision.vision || '';
+      }
+      if (content.contact) {
+        document.getElementById('contactAddress').value = content.contact.address || '';
+        document.getElementById('contactPhone').value = content.contact.phone || '';
+        document.getElementById('contactEmail').value = content.contact.email || '';
+        document.getElementById('contactLat').value = content.contact.map_lat || 9.4534;
+        document.getElementById('contactLng').value = content.contact.map_lng || 77.7936;
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  document.getElementById('aboutContentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const intro = document.getElementById('aboutIntro').value;
+      const history = document.getElementById('aboutHistory').value;
+      const res = await fetch(`${API_BASE}/api/admin/content/about`, getAuthFetchOpts({
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ intro, history, objectives: ['Restore degraded ecosystems', 'Long-term monitoring', 'Community stewardship'] })
+      }));
+      if (!res.ok) throw new Error('Failed to update About content');
+      showToast('About page content saved!');
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  });
+
+  document.getElementById('mvContentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const mission = document.getElementById('mvMission').value;
+      const vision = document.getElementById('mvVision').value;
+      const res = await fetch(`${API_BASE}/api/admin/content/mission_vision`, getAuthFetchOpts({
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mission, vision, core_values: ['Sustainability', 'Community-Led', 'Scientific Rigor', 'Transparency'] })
+      }));
+      if (!res.ok) throw new Error('Failed to update Mission & Vision');
+      showToast('Mission & Vision saved!');
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  });
+
+  document.getElementById('contactContentForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const address = document.getElementById('contactAddress').value;
+      const phone = document.getElementById('contactPhone').value;
+      const email = document.getElementById('contactEmail').value;
+      const map_lat = parseFloat(document.getElementById('contactLat').value) || 9.4534;
+      const map_lng = parseFloat(document.getElementById('contactLng').value) || 77.7936;
+
+      const res = await fetch(`${API_BASE}/api/admin/content/contact`, getAuthFetchOpts({
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address, phone, email, map_lat, map_lng })
+      }));
+      if (!res.ok) throw new Error('Failed to update Contact details');
+      showToast('Contact information saved!');
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  });
+
+  /* ---------- CONTACT MESSAGES ---------- */
+  let allMessagesData = [];
+  let currentMsgStatus = 'all';
+
+  async function loadContactMessages() {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/contact-messages/all`, getAuthFetchOpts());
+      if (!res.ok) throw new Error('Failed to fetch messages');
+      const data = await res.json();
+      allMessagesData = data.messages || [];
+      renderMessagesTable();
+    } catch (err) {
+      document.getElementById('messagesTableBody').innerHTML = `<tr><td colspan="7" style="color:var(--red); text-align:center; padding:20px;">Error: ${err.message}</td></tr>`;
+    }
+  }
+
+  function filterMessages(status, btn) {
+    currentMsgStatus = status;
+    document.querySelectorAll('#view-messages .tab-pill').forEach(p => p.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderMessagesTable();
+  }
+
+  document.getElementById('messageSearchInput').addEventListener('input', () => {
+    renderMessagesTable();
+  });
+
+  function renderMessagesTable() {
+    const q = document.getElementById('messageSearchInput').value.toLowerCase().trim();
+    let filtered = allMessagesData;
+    if (currentMsgStatus !== 'all') {
+      filtered = filtered.filter(m => m.status === currentMsgStatus);
+    }
+    if (q) {
+      filtered = filtered.filter(m => 
+        (m.name && m.name.toLowerCase().includes(q)) ||
+        (m.email && m.email.toLowerCase().includes(q)) ||
+        (m.subject && m.subject.toLowerCase().includes(q)) ||
+        (m.message && m.message.toLowerCase().includes(q))
+      );
+    }
+
+    const tbody = document.getElementById('messagesTableBody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--sage);">No messages found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(m => {
+      const dateStr = m.created_at ? new Date(m.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+      const badgeClass = m.status === 'new' ? 'badge-new' : 'badge-responded';
+
+      return `
+        <tr>
+          <td><div class="cell-title">${escapeHtml(m.name)}</div></td>
+          <td><div class="cell-sub">${escapeHtml(m.email)}<br>${escapeHtml(m.phone || '')}</div></td>
+          <td><strong>${escapeHtml(m.subject || 'General Inquiry')}</strong></td>
+          <td style="max-width:240px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(m.message)}</td>
+          <td>${dateStr}</td>
+          <td><span class="status-badge ${badgeClass}">${escapeHtml(m.status)}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="icon-action" title="View Full Message" onclick="viewMessageModal(${m.id})">👁️</button>
+              <button class="icon-action" title="Delete Message" onclick="deleteContactMessage(${m.id})">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function viewMessageModal(id) {
+    const m = allMessagesData.find(x => x.id === id);
+    if (!m) return;
+
+    document.getElementById('modalTitle').textContent = `Message from ${m.name}`;
+    document.getElementById('modalBody').innerHTML = `
+      <div style="margin-bottom:12px;"><strong>Sender:</strong> ${escapeHtml(m.name)} &lt;${escapeHtml(m.email)}&gt; ${m.phone ? `· Phone: ${escapeHtml(m.phone)}` : ''}</div>
+      <div style="margin-bottom:12px;"><strong>Subject:</strong> ${escapeHtml(m.subject || 'General')}</div>
+      <div style="margin-bottom:12px;"><strong>Date:</strong> ${escapeHtml(m.created_at || '—')}</div>
+      <div style="margin-bottom:16px;"><strong>Status:</strong> <span class="status-badge ${m.status === 'new' ? 'badge-new' : 'badge-responded'}">${escapeHtml(m.status)}</span></div>
+      <div style="background:var(--input-bg); border-radius:10px; padding:16px; border:1px solid var(--border); white-space:pre-wrap;">${escapeHtml(m.message)}</div>
+    `;
+
+    document.getElementById('modalActions').innerHTML = `
+      <select id="updateMsgStatusSelect" style="padding:6px 12px; border-radius:8px; border:1px solid var(--border); background:var(--input-bg);">
+        <option value="new" ${m.status === 'new' ? 'selected' : ''}>Status: New</option>
+        <option value="read" ${m.status === 'read' ? 'selected' : ''}>Status: Read</option>
+        <option value="replied" ${m.status === 'replied' ? 'selected' : ''}>Status: Replied</option>
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="updateMessageStatus(${m.id})">Update Status</button>
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">Close</button>
+    `;
+
+    document.getElementById('detailModal').classList.add('open');
+  }
+
+  async function updateMessageStatus(id) {
+    const status = document.getElementById('updateMsgStatusSelect').value;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/contact-messages/${id}`, getAuthFetchOpts({
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      }));
+      if (!res.ok) throw new Error('Failed to update status');
+      showToast('Message status updated!');
+      closeModal();
+      loadContactMessages();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  async function deleteContactMessage(id) {
+    if (!confirm('Are you sure you want to delete this message?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/contact-messages/${id}`, getAuthFetchOpts({ method: 'DELETE' }));
+      if (!res.ok) throw new Error('Failed to delete message');
+      showToast('Message deleted.');
+      loadContactMessages();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  /* ---------- JOIN REQUESTS ---------- */
+  let allJoinsData = [];
+  let currentJoinStatus = 'all';
+
+  async function loadJoinRequests() {
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/join-requests/all`, getAuthFetchOpts());
+      if (!res.ok) throw new Error('Failed to fetch join requests');
+      const data = await res.json();
+      allJoinsData = data.requests || [];
+      renderJoinsTable();
+    } catch (err) {
+      document.getElementById('joinsTableBody').innerHTML = `<tr><td colspan="8" style="color:var(--red); text-align:center; padding:20px;">Error: ${err.message}</td></tr>`;
+    }
+  }
+
+  function filterJoins(status, btn) {
+    currentJoinStatus = status;
+    document.querySelectorAll('#view-joins .tab-pill').forEach(p => p.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderJoinsTable();
+  }
+
+  document.getElementById('joinSearchInput').addEventListener('input', () => {
+    renderJoinsTable();
+  });
+
+  function renderJoinsTable() {
+    const q = document.getElementById('joinSearchInput').value.toLowerCase().trim();
+    let filtered = allJoinsData;
+    if (currentJoinStatus !== 'all') {
+      filtered = filtered.filter(j => j.status === currentJoinStatus);
+    }
+    if (q) {
+      filtered = filtered.filter(j => 
+        (j.name && j.name.toLowerCase().includes(q)) ||
+        (j.email && j.email.toLowerCase().includes(q)) ||
+        (j.interest && j.interest.toLowerCase().includes(q)) ||
+        (j.location && j.location.toLowerCase().includes(q))
+      );
+    }
+
+    const tbody = document.getElementById('joinsTableBody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:var(--sage);">No join requests found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(j => {
+      const dateStr = j.created_at ? new Date(j.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }) : '—';
+      const badgeClass = j.status === 'new' ? 'badge-new' : 'badge-reviewed';
+
+      return `
+        <tr>
+          <td><div class="cell-title">${escapeHtml(j.name)}</div></td>
+          <td><div class="cell-sub">${escapeHtml(j.email)}<br>${escapeHtml(j.phone || '')}</div></td>
+          <td><strong>${escapeHtml(j.interest || 'Volunteer')}</strong></td>
+          <td>${escapeHtml(j.location || '—')}</td>
+          <td style="max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escapeHtml(j.message || '—')}</td>
+          <td>${dateStr}</td>
+          <td><span class="status-badge ${badgeClass}">${escapeHtml(j.status)}</span></td>
+          <td>
+            <div class="table-actions">
+              <button class="icon-action" title="View Details" onclick="viewJoinModal(${j.id})">👁️</button>
+              <button class="icon-action" title="Delete Request" onclick="deleteJoinRequest(${j.id})">🗑️</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function viewJoinModal(id) {
+    const j = allJoinsData.find(x => x.id === id);
+    if (!j) return;
+
+    document.getElementById('modalTitle').textContent = `Join Request: ${j.name}`;
+    document.getElementById('modalBody').innerHTML = `
+      <div style="margin-bottom:12px;"><strong>Applicant:</strong> ${escapeHtml(j.name)} &lt;${escapeHtml(j.email)}&gt;</div>
+      <div style="margin-bottom:12px;"><strong>Phone:</strong> ${escapeHtml(j.phone || 'Not provided')}</div>
+      <div style="margin-bottom:12px;"><strong>Location:</strong> ${escapeHtml(j.location || 'Not provided')}</div>
+      <div style="margin-bottom:12px;"><strong>Interest Area:</strong> <span class="status-badge badge-ongoing">${escapeHtml(j.interest || 'Volunteer')}</span></div>
+      <div style="margin-bottom:12px;"><strong>Submitted On:</strong> ${escapeHtml(j.created_at || '—')}</div>
+      <div style="margin-bottom:16px;"><strong>Status:</strong> <span class="status-badge ${j.status === 'new' ? 'badge-new' : 'badge-reviewed'}">${escapeHtml(j.status)}</span></div>
+      <div style="background:var(--input-bg); border-radius:10px; padding:16px; border:1px solid var(--border); white-space:pre-wrap;">${escapeHtml(j.message || 'No additional message provided.')}</div>
+    `;
+
+    document.getElementById('modalActions').innerHTML = `
+      <select id="updateJoinStatusSelect" style="padding:6px 12px; border-radius:8px; border:1px solid var(--border); background:var(--input-bg);">
+        <option value="new" ${j.status === 'new' ? 'selected' : ''}>Status: New</option>
+        <option value="reviewed" ${j.status === 'reviewed' ? 'selected' : ''}>Status: Reviewed</option>
+        <option value="contacted" ${j.status === 'contacted' ? 'selected' : ''}>Status: Contacted</option>
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="updateJoinStatus(${j.id})">Update Status</button>
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">Close</button>
+    `;
+
+    document.getElementById('detailModal').classList.add('open');
+  }
+
+  async function updateJoinStatus(id) {
+    const status = document.getElementById('updateJoinStatusSelect').value;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/join-requests/${id}`, getAuthFetchOpts({
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      }));
+      if (!res.ok) throw new Error('Failed to update status');
+      showToast('Join request status updated!');
+      closeModal();
+      loadJoinRequests();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  async function deleteJoinRequest(id) {
+    if (!confirm('Are you sure you want to delete this join request?')) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/join-requests/${id}`, getAuthFetchOpts({ method: 'DELETE' }));
+      if (!res.ok) throw new Error('Failed to delete request');
+      showToast('Join request deleted.');
+      loadJoinRequests();
+    } catch (e) {
+      showToast(e.message, 'error');
+    }
+  }
+
+  /* ---------- PASSWORD CHANGE ---------- */
+  document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const currentPassword = document.getElementById('currentPass').value;
+    const newPassword = document.getElementById('newPass').value;
+    const confirmPassword = document.getElementById('confirmPass').value;
+
+    if (newPassword !== confirmPassword) {
+      showToast('New passwords do not match', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('changePassBtn');
+    btn.disabled = true;
+    btn.textContent = 'Updating…';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/change-password`, getAuthFetchOpts({
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword, newPassword })
+      }));
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to update password');
+
+      showToast('Password changed successfully!');
+      document.getElementById('changePasswordForm').reset();
+    } catch (err) {
+      showToast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Update Password';
+    }
+  });
+
+  /* ---------- UTILS ---------- */
+  function closeModal() {
+    document.getElementById('detailModal').classList.remove('open');
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Initialize on page load
+  checkAuth();
+</script>
+
+</body>
+</html>

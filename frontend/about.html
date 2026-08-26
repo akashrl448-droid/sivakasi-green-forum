@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us — Sivakasi Green Forum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b4332;
+    --sage:#556b5c;
+    --body:#1c2521;
+    --border:#d2dbd3;
+    --rust:#c25e30;
+    --input-bg:#f7f4ef;
+    --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--white); color:var(--body); font-family:'Figtree',sans-serif; font-size:16px; line-height:1.6;}
+  .serif{font-family:'Fraunces',serif; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{list-style:none;}
+  .wrap{max-width:1440px; margin:0 auto; padding:0 80px;}
+  .eyebrow{font-weight:700; font-size:14px; text-transform:uppercase; color:var(--rust); letter-spacing:0.01em;}
+  section{width:100%;}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; padding:14px 28px; font-weight:700; font-size:15px;
+    border-top-left-radius:18px; border-top-right-radius:6px; border-bottom-right-radius:18px; border-bottom-left-radius:6px;
+    cursor:pointer; border:none; transition:opacity .15s ease, background .15s ease;}
+  .btn-primary{background:var(--ink); color:var(--white);}
+  .btn-primary:hover{opacity:0.9;}
+  .btn-outline-dark{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .btn-outline-dark:hover{background:var(--ink); color:var(--white);}
+
+  header{position:sticky; top:0; z-index:100; background:var(--white); border-bottom:1px solid var(--border);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:20px 0;}
+  .logo-group{display:flex; align-items:center; gap:12px;}
+  .logo-text .l1{font-family:'Fraunces',serif; font-weight:900; font-size:20px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .logo-text .l2{font-weight:600; font-size:11px; color:var(--sage); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;}
+  nav.main-nav ul{display:flex; align-items:center; gap:28px; font-size:14px;}
+  nav.main-nav a{color:var(--sage); font-weight:500;}
+  nav.main-nav a.active{color:var(--ink); font-weight:700;}
+  nav.main-nav a:hover{color:var(--ink);}
+  nav.main-nav li.has-drop{position:relative;}
+  .dropdown{position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px);
+    background:var(--white); border:1px solid var(--border); min-width:190px; border-radius:8px; overflow:hidden;
+    opacity:0; visibility:hidden; transition:all .18s ease; box-shadow:0 12px 24px rgba(27,67,50,0.08);}
+  li.has-drop:hover .dropdown{opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);}
+  .dropdown a{display:block; padding:11px 16px; font-size:13.5px; border-bottom:1px solid var(--border);}
+  .dropdown a:last-child{border-bottom:none;}
+  .dropdown a:hover{background:var(--input-bg);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer;}
+  .burger span{width:22px; height:2px; background:var(--ink);}
+
+  /* page header banner (reuses hero radius language, shorter) */
+  .page-hero-outer{padding:24px 24px 0;}
+  .page-hero{
+    position:relative; border-radius:0 0 40px 40px; overflow:hidden;
+    padding:88px 80px; background:#2b4a3a;
+  }
+  .page-hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+  .page-hero .overlay{position:absolute; inset:0; background:rgba(27,67,50,0.6); z-index:1;}
+  .page-hero-content{position:relative; z-index:2; max-width:760px;}
+  .page-hero .eyebrow{color:#e8a583;}
+  .page-hero h1{font-size:48px; font-weight:900; color:var(--white); line-height:1.15; margin-top:12px;}
+  .page-hero p{font-size:17px; color:var(--white); opacity:0.9; margin-top:16px; max-width:600px;}
+  .breadcrumb{display:flex; gap:8px; font-size:13px; color:rgba(255,255,255,0.7); margin-bottom:16px;}
+  .breadcrumb a:hover{color:var(--white);}
+
+  .section-header{display:flex; flex-direction:column; gap:12px;}
+  .section-header h2{font-family:'Fraunces',serif; font-weight:700; font-size:38px; color:var(--ink); line-height:1.2; font-variation-settings:'SOFT' 0,'WONK' 1;}
+
+  /* intro / story */
+  .intro{display:flex; gap:80px; align-items:center; padding:96px 0;}
+  .intro-content{flex:1; display:flex; flex-direction:column; gap:22px;}
+  .intro-content p{font-size:16px; color:var(--body); line-height:1.7;}
+  .intro-img{flex-shrink:0; width:460px; height:400px; border-radius:24px; overflow:hidden; background:var(--input-bg);}
+  .intro-img img{width:100%; height:100%; object-fit:cover;}
+
+  /* history timeline */
+  .history{border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:96px 0; background:var(--input-bg);}
+  .timeline{display:flex; flex-direction:column; gap:0; margin-top:48px;}
+  .tl-item{display:flex; gap:32px; padding:28px 0; border-bottom:1px solid var(--border);}
+  .tl-item:last-child{border-bottom:none;}
+  .tl-year{
+    width:110px; flex-shrink:0; font-family:'Fraunces',serif; font-weight:900; font-size:28px; color:var(--rust);
+    font-variation-settings:'SOFT' 0,'WONK' 1;
+  }
+  .tl-body h4{font-weight:700; font-size:17px; color:var(--ink); margin-bottom:6px;}
+  .tl-body p{font-size:14.5px; color:var(--sage); line-height:1.6; max-width:640px;}
+
+  /* objectives grid */
+  .objectives{padding:96px 0;}
+  .obj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px;}
+  .obj-card{
+    background:var(--white); border:1px solid var(--border);
+    border-top-left-radius:24px; border-top-right-radius:8px; border-bottom-right-radius:24px; border-bottom-left-radius:8px;
+    box-shadow:0 4px 8px rgba(27,67,50,0.03);
+    padding:32px; display:flex; flex-direction:column; gap:14px;
+  }
+  .obj-icon{width:48px; height:48px; border-radius:14px; background:var(--input-bg); display:flex; align-items:center; justify-content:center;}
+  .obj-card h4{font-family:'Fraunces',serif; font-weight:700; font-size:19px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .obj-card p{font-size:14px; color:var(--sage); line-height:1.6;}
+
+  /* areas of work */
+  .areas{border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:96px 0;}
+  .areas-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--border); border:1px solid var(--border); margin-top:48px;}
+  .area-tile{background:var(--white); padding:36px; display:flex; gap:20px; align-items:flex-start;}
+  .area-num{font-family:'Fraunces',serif; font-weight:900; font-size:32px; color:var(--border); font-variation-settings:'SOFT' 0,'WONK' 1; flex-shrink:0;}
+  .area-tile h4{font-weight:700; font-size:16px; color:var(--ink); margin-bottom:6px;}
+  .area-tile p{font-size:14px; color:var(--sage); line-height:1.6;}
+
+  /* community impact */
+  .impact{padding:96px 0; display:flex; gap:64px; align-items:center;}
+  .impact-img{flex-shrink:0; width:440px; height:360px; border-radius:24px; overflow:hidden; background:var(--input-bg);}
+  .impact-img img{width:100%; height:100%; object-fit:cover;}
+  .impact-content{flex:1; display:flex; flex-direction:column; gap:20px;}
+  .impact-content p{font-size:16px; color:var(--body); line-height:1.7;}
+  .impact-stats{display:flex; gap:40px; margin-top:8px;}
+  .impact-stat .num{font-family:'Fraunces',serif; font-weight:900; font-size:34px; color:var(--rust); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .impact-stat .lbl{font-size:13px; color:var(--sage); font-weight:600; margin-top:4px;}
+
+  /* CTA band */
+  .cta-band{background:var(--ink); padding:72px 0; text-align:center;}
+  .cta-band h2{font-family:'Fraunces',serif; font-weight:700; font-size:36px; color:var(--white); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .cta-band p{color:rgba(255,255,255,0.75); margin-top:12px; font-size:15px;}
+  .cta-actions{display:flex; gap:16px; justify-content:center; margin-top:28px;}
+  .cta-band .btn-outline-dark{background:transparent; color:var(--white); border:1.5px solid var(--white);}
+  .cta-band .btn-outline-dark:hover{background:var(--white); color:var(--ink);}
+  .cta-band .btn-primary{background:var(--rust);}
+
+  footer{background:var(--ink); color:var(--white); padding:64px 0 0;}
+  .foot-top{display:flex; justify-content:space-between; gap:40px; padding-bottom:48px;}
+  .foot-brand{width:340px; display:flex; flex-direction:column; gap:16px;}
+  .foot-logo{display:flex; align-items:center; gap:8px;}
+  .foot-logo span{font-family:'Fraunces',serif; font-weight:900; font-size:20px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .foot-brand p{font-size:14px; opacity:0.7; line-height:1.5;}
+  .foot-links{display:flex; gap:64px;}
+  .foot-col{display:flex; flex-direction:column; gap:14px;}
+  .foot-col .head{font-weight:700; font-size:12px; text-transform:uppercase; color:#e8a583;}
+  .foot-col a{font-size:14px; opacity:0.8;}
+  .foot-col a:hover{opacity:1;}
+  .foot-line{height:1px; background:rgba(255,255,255,0.15);}
+  .foot-bottom{display:flex; justify-content:space-between; align-items:center; padding:22px 0; font-size:13px; opacity:0.6;}
+  .foot-social{display:flex; gap:16px;}
+
+  @media (max-width:1000px){
+    .wrap{padding:0 24px;}
+    nav.main-nav, header .btn-primary{display:none;}
+    .burger{display:flex;}
+    .page-hero{padding:56px 24px;}
+    .page-hero h1{font-size:32px;}
+    .page-hero-outer{padding:0;}
+    .page-hero{border-radius:0 0 32px 32px;}
+    .intro{flex-direction:column; padding:64px 0;}
+    .intro-img{width:100%; height:240px;}
+    .history{padding:64px 0;}
+    .tl-item{flex-direction:column; gap:8px;}
+    .objectives{padding:64px 0;}
+    .obj-grid{grid-template-columns:1fr;}
+    .areas{padding:64px 0;}
+    .areas-grid{grid-template-columns:1fr;}
+    .impact{flex-direction:column; padding:64px 0; gap:32px;}
+    .impact-img{width:100%; height:240px;}
+    .impact-stats{flex-wrap:wrap; gap:24px;}
+    .foot-top{flex-direction:column; gap:32px;}
+    .foot-links{gap:40px;}
+    .foot-bottom{flex-direction:column; gap:12px; align-items:flex-start;}
+  }
+  /* Mobile menu container */
+  .mobile-menu{
+    display:none; flex-direction:column; background:var(--white); border-bottom:1px solid var(--border); padding:20px 24px; gap:14px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:15px; font-weight:600; color:var(--ink); padding:8px 0; border-bottom:1px solid var(--input-bg);}
+  .mobile-menu .sub-links{display:flex; flex-direction:column; padding-left:14px; gap:8px;}
+  .mobile-menu .sub-links a{font-size:13.5px; color:var(--sage); border-bottom:none; padding:4px 0;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo-group">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#1b4332" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M12 20V11" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">
+        <div class="l1">Sivakasi Green Forum</div>
+        <div class="l2">Environmental NGO</div>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About Us</a></li>
+        <li><a href="team.html">Our Team</a></li>
+        <li><a href="mission-vision.html">Mission &amp; Vision</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li class="has-drop">
+          <a href="projects-ongoing.html">Projects</a>
+          <div class="dropdown">
+            <a href="projects-completed.html">Completed Projects</a>
+            <a href="projects-ongoing.html">Ongoing Projects</a>
+            <a href="projects-upcoming.html">Upcoming Projects</a>
+          </div>
+        </li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+    <a href="join-us.html" class="btn btn-primary">Join Us Today</a>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="team.html">Our Team</a>
+    <a href="mission-vision.html">Mission &amp; Vision</a>
+    <a href="index.html#gallery">Gallery</a>
+    <div style="font-weight:700; color:var(--ink); margin-top:4px;">Projects:</div>
+    <div class="sub-links">
+      <a href="projects-completed.html">Completed Projects</a>
+      <a href="projects-ongoing.html">Ongoing Projects</a>
+      <a href="projects-upcoming.html">Upcoming Projects</a>
+    </div>
+    <a href="contact.html">Contact Us</a>
+    <a href="join-us.html" style="background:var(--ink); color:#fff; text-align:center; border-radius:8px; margin-top:8px;">Join Us Today</a>
+  </div>
+</header>
+
+<div class="page-hero-outer">
+  <section class="page-hero">
+    <img src="https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=1600&q=80" alt="">
+    <div class="overlay"></div>
+    <div class="wrap page-hero-content" style="padding:0;">
+      <div class="breadcrumb"><a href="index.html">Home</a> <span>/</span> <span>About Us</span></div>
+      <span class="eyebrow">Who We Are</span>
+      <h1 class="serif">Sixteen years of working the water, not just studying it.</h1>
+      <p>Sivakasi Green Forum began as a handful of volunteers mapping a single silted-over reservoir — today we run restoration crews, awareness campaigns, and community stewardship programs across the region.</p>
+    </div>
+  </section>
+</div>
+
+<section class="wrap intro">
+  <div class="intro-img">
+    <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80" alt="Sivakasi Green Forum volunteers at a restoration site">
+  </div>
+  <div class="intro-content">
+    <div class="section-header">
+      <span class="eyebrow">Our Story</span>
+      <h2 class="serif">Born from a single dry reservoir</h2>
+    </div>
+    <p>Sivakasi Green Forum was founded in 2020 by a small group of residents, students, and local business owners who watched the industrial city's water reserves and green cover shrink year after year. What started as informal weekend clean-up drives at one depleted lake grew into a structured, community-led environmental organization.</p>
+    <p>We work within the limits set by nature — addressing green issues, advancing environmental principles, and restoring the ecosystems that Sivakasi and its surrounding villages depend on. Every project we take on unites businesses, government bodies, students, and social organizations around a shared goal of environmental protection.</p>
+    <p>We don't just plan from a desk. Through active participation, public campaigns, and physical volunteering, we bring restoration directly to the dry water reserves and depleted green covers in our home region — measuring our progress in acres restored and wells identified, not reports filed.</p>
+  </div>
+</section>
+
+<section class="history">
+  <div class="wrap">
+    <div class="section-header">
+      <span class="eyebrow">Our History</span>
+      <h2 class="serif">How we got here</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year serif">2020</div>
+        <div class="tl-body">
+          <h4>Founded in Sivakasi</h4>
+          <p>A group of volunteers begins mapping and cleaning a single silted-over reservoir on weekends, with no formal structure — just shared concern for the city's disappearing water bodies.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year serif">2021</div>
+        <div class="tl-body">
+          <h4>Registered as a formal organization</h4>
+          <p>Sivakasi Green Forum is formally registered, bringing together a founding leadership team and its first structured desilting project at Sengulam Kanmai.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year serif">2022</div>
+        <div class="tl-body">
+          <h4>First large-scale afforestation drive</h4>
+          <p>Partnering with local schools and businesses, the Forum plants its first Miyawaki-method urban mini-forest, establishing a model repeated across later projects.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year serif">2024</div>
+        <div class="tl-body">
+          <h4>Government &amp; institutional partnerships</h4>
+          <p>Local government bodies formally back the Forum's well-identification and water-table monitoring work, expanding its reach to villages beyond Sivakasi town.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year serif">2026</div>
+        <div class="tl-body">
+          <h4>2,000+ trees, 42 acres restored</h4>
+          <p>Today, the Forum runs ongoing restoration, monitoring, and community education programs across the Delta watershed region — with volunteers at the center of every project.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap objectives">
+  <div class="section-header" style="align-items:center; text-align:center;">
+    <span class="eyebrow" style="text-align:center;">What Drives Us</span>
+    <h2 class="serif" style="text-align:center;">Our Objectives</h2>
+  </div>
+  <div class="obj-grid">
+    <div class="obj-card">
+      <div class="obj-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M4 8l8-6 8 6M4 16l8 6 8-6" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h4>Restore Degraded Ecosystems</h4>
+      <p>Bring back native tree cover, wetlands, and water bodies that have been depleted by industrial and urban growth.</p>
+    </div>
+    <div class="obj-card">
+      <div class="obj-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1b4332" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h4>Long-Term Monitoring</h4>
+      <p>Track water tables, soil health, and species presence over years, not just at the moment a project is announced.</p>
+    </div>
+    <div class="obj-card">
+      <div class="obj-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M10 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 20v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h4>Community Stewardship</h4>
+      <p>Train residents, students, and volunteers to maintain restored sites themselves, not depend on us indefinitely.</p>
+    </div>
+    <div class="obj-card">
+      <div class="obj-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 20V10M18 20V4M6 20v-6" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <h4>Public Awareness</h4>
+      <p>Run campaigns, school programs, and open volunteer days that make environmental protection visible and approachable.</p>
+    </div>
+    <div class="obj-card">
+      <div class="obj-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V9l7-6 7 6v12M9 21v-6h6v6" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h4>Institutional Partnerships</h4>
+      <p>Work alongside local government, businesses, and civic bodies so restoration outlasts any single funding cycle.</p>
+    </div>
+    <div class="obj-card">
+      <div class="obj-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4Z" stroke="#1b4332" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+      <h4>Prevent Further Deterioration</h4>
+      <p>Identify at-risk sites early — before a reservoir dries out or a green cover disappears entirely.</p>
+    </div>
+  </div>
+</section>
+
+<section class="areas">
+  <div class="wrap">
+    <div class="section-header" style="align-items:center; text-align:center;">
+      <span class="eyebrow" style="text-align:center;">Where We Work</span>
+      <h2 class="serif" style="text-align:center;">Areas of Work</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="areas-grid">
+      <div class="area-tile">
+        <div class="area-num serif">01</div>
+        <div><h4>Afforestation &amp; Urban Forests</h4><p>Miyawaki-method mini-forests and native species plantation drives across depleted green cover.</p></div>
+      </div>
+      <div class="area-tile">
+        <div class="area-num serif">02</div>
+        <div><h4>Water Body Restoration</h4><p>Desilting, sewage separation, and shoreline revival at lakes, ponds, and reservoirs.</p></div>
+      </div>
+      <div class="area-tile">
+        <div class="area-num serif">03</div>
+        <div><h4>Groundwater &amp; Well Mapping</h4><p>Identifying, testing, and documenting public wells to guide sustainable water use.</p></div>
+      </div>
+      <div class="area-tile">
+        <div class="area-num serif">04</div>
+        <div><h4>Environmental Education</h4><p>School programs and public workshops that build long-term environmental awareness.</p></div>
+      </div>
+      <div class="area-tile">
+        <div class="area-num serif">05</div>
+        <div><h4>Volunteer Field Programs</h4><p>Structured weekend and monthly volunteering that puts hands directly on restoration work.</p></div>
+      </div>
+      <div class="area-tile">
+        <div class="area-num serif">06</div>
+        <div><h4>Policy &amp; Government Liaison</h4><p>Working with local bodies to align civic planning with long-term ecological priorities.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap impact">
+  <div class="impact-content">
+    <div class="section-header">
+      <span class="eyebrow">Community Impact</span>
+      <h2 class="serif">Measured in the community, not just acres</h2>
+    </div>
+    <p>Restoration only lasts if the people living alongside it are invested in keeping it that way. Every project we run trains local volunteers, works with nearby schools, and hands off long-term maintenance to the community itself — so the impact doesn't end when our crew leaves the site.</p>
+    <div class="impact-stats">
+      <div class="impact-stat"><div class="num serif">640+</div><div class="lbl">Volunteer Field Hours</div></div>
+      <div class="impact-stat"><div class="num serif">18</div><div class="lbl">Schools Engaged</div></div>
+      <div class="impact-stat"><div class="num serif">6</div><div class="lbl">Villages Reached</div></div>
+    </div>
+  </div>
+  <div class="impact-img">
+    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=800&q=80" alt="Community volunteers planting trees">
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2 class="serif">Want to be part of the next chapter?</h2>
+    <p>Every volunteer, member, and partner moves the next restoration site forward.</p>
+    <div class="cta-actions">
+      <a href="join-us.html" class="btn btn-primary">Join Us Today</a>
+      <a href="projects-ongoing.html" class="btn btn-outline-dark">See Our Projects</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-top">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#F2EFE6" stroke-width="1.6"/><path d="M12 20V11" stroke="#F2EFE6" stroke-width="1.6"/></svg>
+        <span class="serif">Sivakasi Green Forum</span>
+      </div>
+      <p>A Community who loves Nature and Its creations. Working towards water preservation and sustainable forestry.</p>
+    </div>
+    <div class="foot-links">
+      <div class="foot-col">
+        <span class="head">Navigation</span>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="team.html">Our Team</a>
+        <a href="mission-vision.html">Mission &amp; Vision</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Ecosystem</span>
+        <a href="projects-completed.html">Completed Projects</a>
+        <a href="projects-ongoing.html">Ongoing Projects</a>
+        <a href="projects-upcoming.html">Upcoming Projects</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Admin</span>
+        <a href="admin-login.html">Admin Login</a>
+        <a href="join-us.html">Volunteer Portal</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-line"></div>
+  <div class="wrap foot-bottom">
+    <span>Copyright © reserved by Sivakasi Green Forum</span>
+    <div class="foot-social">
+      <span>Instagram</span><span>Facebook</span><span>X</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+  }
+</script>
+
+</body>
+</html>

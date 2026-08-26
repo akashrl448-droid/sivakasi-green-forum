@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upcoming Projects — Sivakasi Green Forum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b4332; --sage:#556b5c; --body:#1c2521; --border:#d2dbd3;
+    --rust:#c25e30; --input-bg:#f7f4ef; --white:#ffffff; --gold:#b37d2f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--white); color:var(--body); font-family:'Figtree',sans-serif; font-size:16px; line-height:1.6;}
+  .serif{font-family:'Fraunces',serif; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{list-style:none;}
+  .wrap{max-width:1440px; margin:0 auto; padding:0 80px;}
+  .eyebrow{font-weight:700; font-size:14px; text-transform:uppercase; color:var(--rust); letter-spacing:0.01em;}
+  section{width:100%;}
+
+  .btn{display:inline-flex; align-items:center; justify-content:center; padding:14px 28px; font-weight:700; font-size:15px;
+    border-top-left-radius:18px; border-top-right-radius:6px; border-bottom-right-radius:18px; border-bottom-left-radius:6px;
+    cursor:pointer; border:none; transition:opacity .15s ease, background .15s ease;}
+  .btn-primary{background:var(--ink); color:var(--white);}
+  .btn-primary:hover{opacity:0.9;}
+  .btn-outline-dark{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .btn-outline-dark:hover{background:var(--ink); color:var(--white);}
+  .btn-sm{padding:9px 18px; font-size:13px;}
+
+  header{position:sticky; top:0; z-index:100; background:var(--white); border-bottom:1px solid var(--border);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:20px 0;}
+  .logo-group{display:flex; align-items:center; gap:12px;}
+  .logo-text .l1{font-family:'Fraunces',serif; font-weight:900; font-size:20px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .logo-text .l2{font-weight:600; font-size:11px; color:var(--sage); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;}
+  nav.main-nav ul{display:flex; align-items:center; gap:28px; font-size:14px;}
+  nav.main-nav a{color:var(--sage); font-weight:500;}
+  nav.main-nav a.active{color:var(--ink); font-weight:700;}
+  nav.main-nav a:hover{color:var(--ink);}
+  nav.main-nav li.has-drop{position:relative;}
+  .dropdown{position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px);
+    background:var(--white); border:1px solid var(--border); min-width:190px; border-radius:8px; overflow:hidden;
+    opacity:0; visibility:hidden; transition:all .18s ease; box-shadow:0 12px 24px rgba(27,67,50,0.08);}
+  li.has-drop:hover .dropdown{opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);}
+  .dropdown a{display:block; padding:11px 16px; font-size:13.5px; border-bottom:1px solid var(--border);}
+  .dropdown a:last-child{border-bottom:none;}
+  .dropdown a.active-sub{color:var(--ink); font-weight:700;}
+  .dropdown a:hover{background:var(--input-bg);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{width:22px; height:2px; background:var(--ink);}
+
+  .mobile-menu{
+    display:none; flex-direction:column; background:var(--white); border-bottom:1px solid var(--border); padding:20px 24px; gap:14px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:15px; font-weight:600; color:var(--ink); padding:8px 0; border-bottom:1px solid var(--input-bg);}
+  .mobile-menu .sub-links{display:flex; flex-direction:column; padding-left:14px; gap:8px;}
+  .mobile-menu .sub-links a{font-size:13.5px; color:var(--sage); border-bottom:none; padding:4px 0;}
+
+  .page-hero-outer{padding:24px 24px 0;}
+  .page-hero{position:relative; border-radius:0 0 40px 40px; overflow:hidden; padding:88px 80px; background:#2b4a3a;}
+  .page-hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+  .page-hero .overlay{position:absolute; inset:0; background:rgba(27,67,50,0.6); z-index:1;}
+  .page-hero-content{position:relative; z-index:2; max-width:760px;}
+  .page-hero .eyebrow{color:#e8a583;}
+  .page-hero h1{font-size:48px; font-weight:900; color:var(--white); line-height:1.15; margin-top:12px;}
+  .page-hero p{font-size:17px; color:var(--white); opacity:0.9; margin-top:16px; max-width:600px;}
+  .breadcrumb{display:flex; gap:8px; font-size:13px; color:rgba(255,255,255,0.7); margin-bottom:16px;}
+  .breadcrumb a:hover{color:var(--white);}
+
+  .subnav{border-bottom:1px solid var(--border); background:var(--white);}
+  .subnav .wrap{display:flex; gap:8px; padding:20px 80px;}
+  .subnav-tab{padding:10px 20px; border-radius:100px; font-size:13.5px; font-weight:600; color:var(--sage); border:1px solid var(--border);}
+  .subnav-tab.active{background:var(--ink); color:var(--white); border-color:var(--ink);}
+  .subnav-tab:hover:not(.active){border-color:var(--ink); color:var(--ink);}
+
+  .section-header{display:flex; flex-direction:column; gap:12px;}
+  .section-header h2{font-family:'Fraunces',serif; font-weight:700; font-size:38px; color:var(--ink); line-height:1.2; font-variation-settings:'SOFT' 0,'WONK' 1;}
+
+  .listing{padding:80px 0;}
+  .listing-top{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:48px; flex-wrap:wrap; gap:20px;}
+  .result-count{font-size:14px; color:var(--sage);}
+
+  .proj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:32px;}
+  .proj-card{background:var(--white); border:1px solid var(--border); border-radius:24px 8px 24px 8px; overflow:hidden; display:flex; flex-direction:column; transition:transform .15s ease, box-shadow .15s ease;}
+  .proj-card:hover{transform:translateY(-3px); box-shadow:0 12px 24px rgba(27,67,50,0.08);}
+  .proj-img{aspect-ratio:488/291; background:var(--input-bg); overflow:hidden; position:relative;}
+  .proj-img img{width:100%; height:100%; object-fit:cover; transition:transform .3s ease;}
+  .proj-card:hover .proj-img img{transform:scale(1.03);}
+  .status-stamp{
+    position:absolute; top:14px; left:14px; background:var(--gold); color:var(--white);
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; padding:6px 12px; border-radius:100px;
+  }
+  .proj-info{padding:24px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  .proj-info .date{font-weight:700; font-size:11px; letter-spacing:0.08em; color:var(--rust); text-transform:uppercase;}
+  .proj-info h3{font-family:'Fraunces',serif; font-weight:700; font-size:20px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .proj-info p{font-size:14px; color:var(--sage); line-height:1.5; flex:1;}
+  .proj-meta{display:flex; gap:16px; font-size:12.5px; color:var(--sage); margin-top:4px; padding-top:12px; border-top:1px solid var(--border);}
+  .proj-meta span{display:flex; align-items:center; gap:5px;}
+  .proj-card .link-arrow{font-weight:700; font-size:13.5px; color:var(--ink); margin-top:10px; display:inline-flex; align-items:center; gap:6px;}
+  .proj-card:hover .link-arrow{color:var(--rust);}
+
+  .prereg{background:var(--input-bg); padding:80px 0; border-top:1px solid var(--border);}
+  .prereg-inner{display:flex; justify-content:space-between; align-items:center; gap:40px; flex-wrap:wrap;}
+  .prereg-inner p{color:var(--sage); margin-top:10px; font-size:15px; max-width:600px;}
+
+  .cta-band{background:var(--ink); padding:72px 0; text-align:center;}
+  .cta-band h2{font-family:'Fraunces',serif; font-weight:700; font-size:36px; color:var(--white); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .cta-band p{color:rgba(255,255,255,0.75); margin-top:12px; font-size:15px;}
+  .cta-actions{display:flex; gap:16px; justify-content:center; margin-top:28px;}
+  .cta-band .btn-outline-dark{background:transparent; color:var(--white); border:1.5px solid var(--white);}
+  .cta-band .btn-outline-dark:hover{background:var(--white); color:var(--ink);}
+  .cta-band .btn-primary{background:var(--rust);}
+
+  footer{background:var(--ink); color:var(--white); padding:64px 0 0;}
+  .foot-top{display:flex; justify-content:space-between; gap:40px; padding-bottom:48px;}
+  .foot-brand{width:340px; display:flex; flex-direction:column; gap:16px;}
+  .foot-logo{display:flex; align-items:center; gap:8px;}
+  .foot-logo span{font-family:'Fraunces',serif; font-weight:900; font-size:20px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .foot-brand p{font-size:14px; opacity:0.7; line-height:1.5;}
+  .foot-links{display:flex; gap:64px;}
+  .foot-col{display:flex; flex-direction:column; gap:14px;}
+  .foot-col .head{font-weight:700; font-size:12px; text-transform:uppercase; color:#e8a583;}
+  .foot-col a{font-size:14px; opacity:0.8;}
+  .foot-col a:hover{opacity:1;}
+  .foot-line{height:1px; background:rgba(255,255,255,0.15);}
+  .foot-bottom{display:flex; justify-content:space-between; align-items:center; padding:22px 0; font-size:13px; opacity:0.6;}
+  .foot-social{display:flex; gap:16px;}
+
+  @media (max-width:1000px){
+    .wrap{padding:0 24px;}
+    nav.main-nav, header .btn-primary{display:none;}
+    .burger{display:flex;}
+    .page-hero{padding:56px 24px;}
+    .page-hero h1{font-size:32px;}
+    .page-hero-outer{padding:0;}
+    .page-hero{border-radius:0 0 32px 32px;}
+    .subnav .wrap{padding:16px 24px; overflow-x:auto;}
+    .listing{padding:56px 0;}
+    .proj-grid{grid-template-columns:1fr;}
+    .prereg-inner{flex-direction:column; align-items:flex-start; gap:24px;}
+    .foot-top{flex-direction:column; gap:32px;}
+    .foot-links{gap:40px;}
+    .foot-bottom{flex-direction:column; gap:12px; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo-group">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#1b4332" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M12 20V11" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">
+        <div class="l1">Sivakasi Green Forum</div>
+        <div class="l2">Environmental NGO</div>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="team.html">Our Team</a></li>
+        <li><a href="mission-vision.html">Mission &amp; Vision</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li class="has-drop">
+          <a href="projects-upcoming.html" class="active">Projects</a>
+          <div class="dropdown">
+            <a href="projects-completed.html">Completed Projects</a>
+            <a href="projects-ongoing.html">Ongoing Projects</a>
+            <a href="projects-upcoming.html" class="active-sub">Upcoming Projects</a>
+          </div>
+        </li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+    <a href="join-us.html" class="btn btn-primary">Join Us Today</a>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="team.html">Our Team</a>
+    <a href="mission-vision.html">Mission &amp; Vision</a>
+    <a href="index.html#gallery">Gallery</a>
+    <div style="font-weight:700; color:var(--ink); margin-top:4px;">Projects:</div>
+    <div class="sub-links">
+      <a href="projects-completed.html">Completed Projects</a>
+      <a href="projects-ongoing.html">Ongoing Projects</a>
+      <a href="projects-upcoming.html">Upcoming Projects</a>
+    </div>
+    <a href="contact.html">Contact Us</a>
+    <a href="join-us.html" style="background:var(--ink); color:#fff; text-align:center; border-radius:8px; margin-top:8px;">Join Us Today</a>
+  </div>
+</header>
+
+<div class="page-hero-outer">
+  <section class="page-hero">
+    <img src="https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=1600&q=80" alt="Mountain stream watershed in planning">
+    <div class="overlay"></div>
+    <div class="wrap page-hero-content" style="padding:0;">
+      <div class="breadcrumb"><a href="index.html">Home</a> <span>/</span> <a href="projects-upcoming.html">Projects</a> <span>/</span> <span>Upcoming</span></div>
+      <span class="eyebrow">Field Log · In Planning</span>
+      <h1 class="serif">The ground we're preparing to break.</h1>
+      <p>Projects in feasibility study, community consultation, and pre-planting phases across the Sivakasi region.</p>
+    </div>
+  </section>
+</div>
+
+<div class="subnav">
+  <div class="wrap">
+    <a href="projects-completed.html" class="subnav-tab">Completed</a>
+    <a href="projects-ongoing.html" class="subnav-tab">Ongoing</a>
+    <a href="projects-upcoming.html" class="subnav-tab active">Upcoming</a>
+  </div>
+</div>
+
+<section class="wrap listing">
+  <div class="listing-top">
+    <div class="section-header">
+      <span class="eyebrow">Upcoming Projects</span>
+      <h2 class="serif">Sites in planning</h2>
+    </div>
+    <span class="result-count">Showing upcoming projects</span>
+  </div>
+
+  <div class="proj-grid">
+    <!-- Populated dynamically via /api/projects?category=upcoming -->
+  </div>
+</section>
+
+<section class="prereg">
+  <div class="wrap prereg-inner">
+    <div>
+      <span class="eyebrow">Get Involved Early</span>
+      <h2 class="serif" style="font-size:30px; color:var(--ink); margin-top:10px;">Be first in line when these open up</h2>
+      <p>Pre-register for volunteer slots and funding updates on any upcoming project before it officially launches.</p>
+    </div>
+    <a href="join-us.html" class="btn btn-primary">Pre-Register Interest</a>
+  </div>
+</section>
+
+<section class="cta-band">
+  <div class="wrap">
+    <h2 class="serif">Help fund what's next</h2>
+    <p>Every upcoming project starts with community support — become a member or donate today.</p>
+    <div class="cta-actions">
+      <a href="join-us.html" class="btn btn-primary">Support a Project</a>
+      <a href="projects-completed.html" class="btn btn-outline-dark">See Our Track Record</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-top">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#F2EFE6" stroke-width="1.6"/><path d="M12 20V11" stroke="#F2EFE6" stroke-width="1.6"/></svg>
+        <span class="serif">Sivakasi Green Forum</span>
+      </div>
+      <p>A Community who loves Nature and Its creations. Working towards water preservation and sustainable forestry.</p>
+    </div>
+    <div class="foot-links">
+      <div class="foot-col">
+        <span class="head">Navigation</span>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="team.html">Our Team</a>
+        <a href="mission-vision.html">Mission &amp; Vision</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Ecosystem</span>
+        <a href="projects-completed.html">Completed Projects</a>
+        <a href="projects-ongoing.html">Ongoing Projects</a>
+        <a href="projects-upcoming.html">Upcoming Projects</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Admin</span>
+        <a href="admin-login.html">Admin Login</a>
+        <a href="join-us.html">Volunteer Portal</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-line"></div>
+  <div class="wrap foot-bottom">
+    <span>Copyright © reserved by Sivakasi Green Forum</span>
+    <div class="foot-social">
+      <span>Instagram</span><span>Facebook</span><span>X</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+  }
+
+  async function loadDynamicProjects() {
+    try {
+      const res = await fetch('/api/projects?category=upcoming&limit=50');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.projects || data.projects.length === 0) return;
+
+      const countEl = document.querySelector('.result-count');
+      const headerH2 = document.querySelector('.section-header h2');
+      if (countEl) countEl.textContent = `Showing ${data.projects.length} upcoming projects`;
+      if (headerH2) headerH2.textContent = `${data.projects.length} sites, in planning`;
+
+      const grid = document.querySelector('.proj-grid');
+      if (!grid) return;
+
+      grid.innerHTML = data.projects.map(p => {
+        const cover = p.cover_image || 'https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=600&q=80';
+        const dateStr = p.expected_completion_date ? `Planned ${new Date(p.expected_completion_date).toLocaleDateString('en-US', { month:'short', year:'numeric' })}` : 'In Planning';
+        const loc = p.location || 'Sivakasi';
+        const tag = p.project_category_tag || 'Restoration';
+
+        return `
+          <a href="project-detail.html?slug=${encodeURIComponent(p.slug)}" class="proj-card">
+            <div class="proj-img">
+              <span class="status-stamp">Upcoming</span>
+              <img src="${cover}" alt="${p.title}" loading="lazy">
+            </div>
+            <div class="proj-info">
+              <span class="date">${dateStr}</span>
+              <h3>${p.title}</h3>
+              <p>${p.short_description || ''}</p>
+              <div class="proj-meta">
+                <span>📍 ${loc}</span>
+                <span>🏷️ ${tag}</span>
+              </div>
+              <span class="link-arrow">View project →</span>
+            </div>
+          </a>
+        `;
+      }).join('');
+    } catch (e) {
+      console.warn('Using static project cards fallback:', e);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadDynamicProjects);
+</script>
+
+</body>
+</html>

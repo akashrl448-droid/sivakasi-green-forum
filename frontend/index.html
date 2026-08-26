@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sivakasi Green Forum — A Community who loves Nature and Its creations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1b4332;
+    --sage:#556b5c;
+    --body:#1c2521;
+    --border:#d2dbd3;
+    --rust:#c25e30;
+    --input-bg:#f7f4ef;
+    --white:#ffffff;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--white);
+    color:var(--body);
+    font-family:'Figtree',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+  }
+  .serif{font-family:'Fraunces',serif; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ul{list-style:none;}
+  .wrap{max-width:1440px; margin:0 auto; padding:0 80px;}
+  .eyebrow{font-weight:700; font-size:14px; text-transform:uppercase; color:var(--rust); letter-spacing:0.01em;}
+  section{width:100%;}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:14px 28px;
+    font-weight:700; font-size:15px;
+    border-top-left-radius:18px; border-top-right-radius:6px;
+    border-bottom-right-radius:18px; border-bottom-left-radius:6px;
+    cursor:pointer; border:none;
+    transition:opacity .15s ease, background .15s ease;
+  }
+  .btn-primary{background:var(--ink); color:var(--white);}
+  .btn-primary:hover{opacity:0.9;}
+  .btn-outline-dark{background:transparent; color:var(--ink); border:1.5px solid var(--ink);}
+  .btn-outline-dark:hover{background:var(--ink); color:var(--white);}
+  .btn-outline-light{background:rgba(255,255,255,0.13); color:var(--white); border:1.5px solid var(--white);}
+  .btn-outline-light:hover{background:rgba(255,255,255,0.24);}
+
+  header{
+    position:sticky; top:0; z-index:100;
+    background:var(--white);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:20px 0;}
+  .logo-group{display:flex; align-items:center; gap:12px;}
+  .logo-text .l1{font-family:'Fraunces',serif; font-weight:900; font-size:20px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .logo-text .l2{font-weight:600; font-size:11px; color:var(--sage); text-transform:uppercase; letter-spacing:0.06em; margin-top:2px;}
+  nav.main-nav ul{display:flex; align-items:center; gap:28px; font-size:14px;}
+  nav.main-nav a{color:var(--sage); font-weight:500;}
+  nav.main-nav a.active{color:var(--ink); font-weight:700;}
+  nav.main-nav a:hover{color:var(--ink);}
+  nav.main-nav li.has-drop{position:relative;}
+  .dropdown{
+    position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(-6px);
+    background:var(--white); border:1px solid var(--border); min-width:190px;
+    border-radius:8px; overflow:hidden;
+    opacity:0; visibility:hidden; transition:all .18s ease;
+    box-shadow:0 12px 24px rgba(27,67,50,0.08);
+  }
+  li.has-drop:hover .dropdown{opacity:1; visibility:visible; transform:translateX(-50%) translateY(0);}
+  .dropdown a{display:block; padding:11px 16px; font-size:13.5px; border-bottom:1px solid var(--border);}
+  .dropdown a:last-child{border-bottom:none;}
+  .dropdown a:hover{background:var(--input-bg);}
+  .burger{display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px;}
+  .burger span{width:22px; height:2px; background:var(--ink); transition:all .2s ease;}
+
+  /* Mobile menu container */
+  .mobile-menu{
+    display:none; flex-direction:column; background:var(--white); border-bottom:1px solid var(--border); padding:20px 24px; gap:14px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:15px; font-weight:600; color:var(--ink); padding:8px 0; border-bottom:1px solid var(--input-bg);}
+  .mobile-menu .sub-links{display:flex; flex-direction:column; padding-left:14px; gap:8px;}
+  .mobile-menu .sub-links a{font-size:13.5px; color:var(--sage); border-bottom:none; padding:4px 0;}
+
+  .hero-outer{padding:24px 24px 0;}
+  .hero{
+    position:relative;
+    border-radius:0 0 40px 40px;
+    overflow:hidden;
+    padding:120px 80px;
+    background:#2b4a3a;
+  }
+  .hero img.hero-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;}
+  .hero .overlay{position:absolute; inset:0; background:rgba(27,67,50,0.55); z-index:1;}
+  .hero-content{position:relative; z-index:2; display:flex; flex-direction:column; gap:40px;}
+  .hero-copy{display:flex; flex-direction:column; gap:24px; max-width:760px;}
+  .pill{
+    display:inline-flex; align-items:center; gap:8px; width:fit-content;
+    background:rgba(255,255,255,0.13); padding:6px 16px; border-radius:100px;
+    font-weight:600; font-size:13px; color:var(--white); text-transform:uppercase; letter-spacing:0.02em;
+  }
+  .pill .dot{width:8px; height:8px; border-radius:50%; background:#8fd19e;}
+  .hero h1{font-size:64px; font-weight:900; color:var(--white); line-height:1.15;}
+  .hero p.lede{font-size:18px; color:var(--white); opacity:0.9; line-height:1.6; max-width:680px;}
+  .hero-cta{display:flex; gap:16px; flex-wrap:wrap;}
+
+  .about-us{display:flex; gap:80px; align-items:center; padding:100px 0;}
+  .about-content{display:flex; flex-direction:column; gap:24px; flex:1;}
+  .section-header{display:flex; flex-direction:column; gap:12px;}
+  .section-header h2{font-family:'Fraunces',serif; font-weight:700; font-size:40px; color:var(--ink); line-height:1.2; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .about-content p{font-size:16px; color:var(--body); line-height:1.6;}
+  .about-content p.muted{color:var(--sage); font-size:15px;}
+  .about-img{flex-shrink:0; width:476px; height:317px; border-radius:24px; overflow:hidden; background:var(--input-bg);}
+  .about-img img{width:100%; height:100%; object-fit:cover;}
+
+  .mission-vision{border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:100px 0;}
+  .mv-grid{display:flex; gap:80px; align-items:flex-start;}
+  .mission-left{width:440px; flex-shrink:0; display:flex; flex-direction:column; gap:24px;}
+  .mission-left p{color:var(--body); font-size:16px; line-height:1.6;}
+  .vision-right{flex:1; display:flex; flex-direction:column; gap:28px;}
+  .pillars{display:flex; flex-direction:column; gap:16px;}
+  .pillar{display:flex; align-items:center; gap:20px; background:var(--input-bg); border-radius:12px; padding:20px;}
+  .pillar-num{
+    width:40px; height:40px; border-radius:20px; background:var(--ink); color:var(--white);
+    display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; flex-shrink:0;
+  }
+  .pillar p{font-weight:600; font-size:16px; color:var(--ink);}
+
+  .statistics{padding:80px; display:flex; flex-direction:column; align-items:center; gap:40px;}
+  .statistics .section-header{align-items:center; text-align:center;}
+  .statistics .section-header h2{text-align:center;}
+  .stats-grid{display:flex; gap:24px; width:100%;}
+  .stat-tile{
+    flex:1; background:var(--white); border:1px solid var(--border);
+    border-top-left-radius:24px; border-top-right-radius:8px; border-bottom-right-radius:24px; border-bottom-left-radius:8px;
+    box-shadow:0 4px 8px rgba(27,67,50,0.03);
+    padding:32px; display:flex; flex-direction:column; gap:12px;
+  }
+  .stat-tile .num{font-family:'Fraunces',serif; font-weight:900; font-size:44px; color:var(--rust); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .stat-tile .lbl{font-weight:600; font-size:16px; color:var(--ink); line-height:1.4;}
+
+  .projects{border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:100px 80px; display:flex; flex-direction:column; gap:56px; align-items:center;}
+  .projects .section-header{align-items:center; text-align:center;}
+  .projects .section-header h2{text-align:center;}
+  .proj-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:32px; width:100%;}
+  .proj-card{background:var(--white); border:1px solid var(--border); border-radius:24px 8px 24px 8px; overflow:hidden; transition:transform .15s ease, box-shadow .15s ease;}
+  .proj-card:hover{transform:translateY(-3px); box-shadow:0 12px 24px rgba(27,67,50,0.08);}
+  .proj-img{aspect-ratio:488/291; background:var(--input-bg); overflow:hidden;}
+  .proj-img img{width:100%; height:100%; object-fit:cover; transition:transform .3s ease;}
+  .proj-card:hover .proj-img img{transform:scale(1.03);}
+  .proj-info{padding:24px; display:flex; flex-direction:column; gap:8px;}
+  .proj-info .date{font-weight:700; font-size:11px; letter-spacing:0.08em; color:var(--rust); text-transform:uppercase;}
+  .proj-info h3{font-family:'Fraunces',serif; font-weight:700; font-size:20px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .proj-info p{font-size:14px; color:var(--sage); line-height:1.5;}
+
+  .team{padding:100px 0; display:flex; flex-direction:column; gap:0;}
+  .team-header{display:flex; flex-direction:column; gap:16px; align-items:center; text-align:center; margin-bottom:56px;}
+  .team-header .eyebrow{text-align:center;}
+  .team-header .quote{font-family:'Fraunces',serif; font-weight:600; font-size:26px; color:var(--ink); max-width:800px; line-height:1.4; font-style:italic; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .team-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
+  .team-member{display:flex; flex-direction:column; align-items:center; text-align:center; gap:16px;}
+  .avatar{width:100px; height:100px; border-radius:50%; background:var(--input-bg); border:1px solid var(--border); overflow:hidden;}
+  .avatar img{width:100%; height:100%; object-fit:cover;}
+  .team-member h4{font-weight:700; font-size:16px; color:var(--ink);}
+  .team-member .role{font-size:13px; color:var(--sage); margin-top:2px;}
+
+  .gallery{border-top:1px solid var(--border); padding:100px 0; display:flex; flex-direction:column; gap:40px;}
+  .filters{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+  .filter-pill{padding:8px 20px; border-radius:100px; border:1px solid var(--border); font-size:13px; font-weight:600; color:var(--sage); cursor:pointer; transition:all .15s ease;}
+  .filter-pill.active{background:var(--ink); color:var(--white); border-color:var(--ink);}
+  .gallery-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+  .gallery-col{display:flex; flex-direction:column; gap:24px;}
+  .gallery-item{border-radius:16px; overflow:hidden; background:var(--input-bg); transition:opacity .2s ease;}
+  .gallery-item img{width:100%; display:block; object-fit:cover;}
+
+  .contact{display:flex; gap:64px; padding:100px 0; align-items:flex-start;}
+  .contact-info{flex:1; display:flex; flex-direction:column; gap:40px;}
+  .contact-rows{display:flex; flex-direction:column; gap:24px;}
+  .contact-row{display:flex; gap:16px; align-items:flex-start;}
+  .icon-chip{width:40px; height:40px; border-radius:12px; background:var(--white); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .contact-row .label{font-weight:700; font-size:12px; color:var(--rust); text-transform:uppercase; letter-spacing:0.04em;}
+  .contact-row .value{font-size:15px; color:var(--body); margin-top:4px;}
+  .socials{display:flex; gap:12px;}
+  .social-chip{width:42px; height:42px; border-radius:12px; background:var(--white); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; text-decoration:none; font-weight:700; color:var(--ink);}
+  .social-chip:hover{background:var(--input-bg);}
+  .map-box{width:100%; height:180px; border-radius:16px; overflow:hidden; background:var(--input-bg);}
+  .map-box img{width:100%; height:100%; object-fit:cover;}
+
+  .contact-form{
+    width:520px; background:var(--white); border:1px solid var(--border);
+    border-radius:32px 8px 32px 8px;
+    box-shadow:0 8px 12px rgba(27,67,50,0.02);
+    padding:40px; display:flex; flex-direction:column; gap:24px;
+  }
+  .contact-form h3{font-family:'Fraunces',serif; font-weight:700; font-size:28px; color:var(--ink); font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .form-fields{display:flex; flex-direction:column; gap:16px;}
+  .field{display:flex; flex-direction:column; gap:8px;}
+  .field label{font-weight:600; font-size:13px; color:var(--ink);}
+  .field input, .field textarea{
+    background:var(--input-bg); border:1px solid var(--border); border-radius:8px;
+    padding:0 16px; height:44px; font-family:'Figtree',sans-serif; font-size:14px; color:var(--body);
+  }
+  .field textarea{padding:16px; height:100px; resize:none;}
+  .field input::placeholder, .field textarea::placeholder{color:var(--sage);}
+  .field input:focus, .field textarea:focus{outline:2px solid var(--ink); outline-offset:1px;}
+  .contact-form .btn-primary{width:100%;}
+  .home-msg-success{display:none; background:#e7f0e9; color:#2f7a4d; border:1px solid #c2dbca; padding:16px; border-radius:10px; font-weight:600; font-size:14px; text-align:center;}
+
+  footer{background:var(--ink); color:var(--white); padding:64px 0 0;}
+  .foot-top{display:flex; justify-content:space-between; gap:40px; padding-bottom:48px;}
+  .foot-brand{width:340px; display:flex; flex-direction:column; gap:16px;}
+  .foot-logo{display:flex; align-items:center; gap:8px;}
+  .foot-logo span{font-family:'Fraunces',serif; font-weight:900; font-size:20px; font-variation-settings:'SOFT' 0,'WONK' 1;}
+  .foot-brand p{font-size:14px; opacity:0.7; line-height:1.5;}
+  .foot-links{display:flex; gap:64px;}
+  .foot-col{display:flex; flex-direction:column; gap:14px;}
+  .foot-col .head{font-weight:700; font-size:12px; text-transform:uppercase; color:#e8a583;}
+  .foot-col a{font-size:14px; opacity:0.8;}
+  .foot-col a:hover{opacity:1;}
+  .foot-line{height:1px; background:rgba(255,255,255,0.15);}
+  .foot-bottom{display:flex; justify-content:space-between; align-items:center; padding:22px 0; font-size:13px; opacity:0.6;}
+  .foot-social{display:flex; gap:16px;}
+
+  @media (max-width:1000px){
+    .wrap{padding:0 24px;}
+    nav.main-nav, header .btn-primary{display:none;}
+    .burger{display:flex;}
+    .hero{padding:64px 24px;}
+    .hero h1{font-size:38px;}
+    .hero-outer{padding:0;}
+    .hero{border-radius:0 0 32px 32px;}
+    .about-us{flex-direction:column; padding:64px 0;}
+    .about-img{width:100%; height:240px;}
+    .mission-vision{padding:64px 0;}
+    .mv-grid{flex-direction:column; gap:40px;}
+    .mission-left{width:100%;}
+    .statistics{padding:64px 24px;}
+    .stats-grid{flex-direction:column;}
+    .projects{padding:64px 24px;}
+    .proj-grid{grid-template-columns:1fr;}
+    .team{padding:64px 0;}
+    .team-grid{grid-template-columns:repeat(2,1fr); row-gap:32px;}
+    .gallery{padding:64px 0;}
+    .gallery-grid{grid-template-columns:1fr;}
+    .contact{flex-direction:column; padding:64px 0; gap:40px;}
+    .contact-form{width:100%; box-sizing:border-box;}
+    .foot-top{flex-direction:column; gap:32px;}
+    .foot-links{gap:40px;}
+    .foot-bottom{flex-direction:column; gap:12px; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav-row">
+    <a href="index.html" class="logo-group">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#1b4332" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M12 20V11" stroke="#1b4332" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">
+        <div class="l1">Sivakasi Green Forum</div>
+        <div class="l2">Environmental NGO</div>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="team.html">Our Team</a></li>
+        <li><a href="mission-vision.html">Mission &amp; Vision</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li class="has-drop">
+          <a href="projects-ongoing.html">Projects</a>
+          <div class="dropdown">
+            <a href="projects-completed.html">Completed Projects</a>
+            <a href="projects-ongoing.html">Ongoing Projects</a>
+            <a href="projects-upcoming.html">Upcoming Projects</a>
+          </div>
+        </li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </nav>
+    <a href="join-us.html" class="btn btn-primary">Join Us Today</a>
+    <button class="burger" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="team.html">Our Team</a>
+    <a href="mission-vision.html">Mission &amp; Vision</a>
+    <a href="#gallery">Gallery</a>
+    <div style="font-weight:700; color:var(--ink); margin-top:4px;">Projects:</div>
+    <div class="sub-links">
+      <a href="projects-completed.html">Completed Projects</a>
+      <a href="projects-ongoing.html">Ongoing Projects</a>
+      <a href="projects-upcoming.html">Upcoming Projects</a>
+    </div>
+    <a href="contact.html">Contact Us</a>
+    <a href="join-us.html" style="background:var(--ink); color:#fff; text-align:center; border-radius:8px; margin-top:8px;">Join Us Today</a>
+  </div>
+</header>
+
+<div class="hero-outer">
+  <section class="hero">
+    <img class="hero-bg" src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80" alt="Lush green natural landscape">
+    <div class="overlay"></div>
+    <div class="wrap hero-content" style="padding:0;">
+      <div class="hero-copy">
+        <div class="pill"><span class="dot"></span> Established 2020 · Tamil Nadu</div>
+        <h1 class="serif">A Community who loves Nature and Its creations</h1>
+        <p class="lede">Addressing environmental concerns and restoring natural ecosystems in the industrial landscape of Sivakasi. Together, we bridge the gap between thriving human development and rich ecological preservation.</p>
+      </div>
+      <div class="hero-cta">
+        <a href="projects-ongoing.html" class="btn btn-primary" style="background:#1b4332;">Explore Our Projects</a>
+        <a href="about.html" class="btn btn-outline-light">Read Our Impact</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="wrap about-us" id="about">
+  <div class="about-content">
+    <div class="section-header">
+      <span class="eyebrow">Our Passion</span>
+      <h2 class="serif">Bridging the gap to restore our green environment</h2>
+    </div>
+    <p>Within the limits set by nature, we try to bridge the gap, addressing green issues, advancing green principles, restoring green environment in the Industrial City — Sivakasi. We unite businesses, government, students, and social organizations around environmental protection.</p>
+    <p class="muted">Through active participation, public campaign efforts, and physical volunteering, we bring restoration directly to dry water reserves and depleted green covers in our home region.</p>
+    <a href="about.html" class="btn btn-outline-dark" style="width:fit-content;">Read Our Story</a>
+  </div>
+  <div class="about-img">
+    <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?w=800&q=80" alt="Volunteers restoring a wetland">
+  </div>
+</section>
+
+<section class="mission-vision" id="mission">
+  <div class="wrap mv-grid">
+    <div class="mission-left">
+      <div class="section-header">
+        <span class="eyebrow">Our Mission</span>
+        <h2 class="serif">Paving the way for bio-diversity and health</h2>
+      </div>
+      <p>Ensuring environmental safety &amp; health and protection of natural reservoirs; establishing a green environment and thereby paving way for bio-diversity.</p>
+      <a href="mission-vision.html" class="btn btn-outline-dark" style="width:fit-content; margin-top:12px;">Explore Mission &amp; Vision</a>
+    </div>
+    <div class="vision-right">
+      <span class="eyebrow">Our Vision Pillars</span>
+      <div class="pillars">
+        <div class="pillar"><div class="pillar-num">01</div><p>Enhancing public awareness on environment</p></div>
+        <div class="pillar"><div class="pillar-num">02</div><p>Developing air, water, and soil for a healthy society</p></div>
+        <div class="pillar"><div class="pillar-num">03</div><p>Upgrading environment by adding green</p></div>
+        <div class="pillar"><div class="pillar-num">04</div><p>Preventing environmental deterioration</p></div>
+        <div class="pillar"><div class="pillar-num">05</div><p>Re-establishing hopes with government and society</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="statistics">
+  <div class="section-header">
+    <span class="eyebrow">Our Footprint</span>
+    <h2 class="serif">Restoration in numbers</h2>
+  </div>
+  <div class="stats-grid wrap" style="padding:0; max-width:1280px;">
+    <div class="stat-tile"><div class="num serif">2,000+</div><div class="lbl">Trees Planted &amp; Nurtured</div></div>
+    <div class="stat-tile"><div class="num serif">42 Acres</div><div class="lbl">Ecosystem Restored</div></div>
+    <div class="stat-tile"><div class="num serif">35 Wells</div><div class="lbl">Heritage Wells Mapped</div></div>
+    <div class="stat-tile"><div class="num serif">72 Acres</div><div class="lbl">Desilted &amp; Sewage Separated</div></div>
+  </div>
+</section>
+
+<section class="projects" id="projects">
+  <div class="section-header">
+    <span class="eyebrow">Groundwork</span>
+    <h2 class="serif">Our active environmental projects in Sivakasi</h2>
+  </div>
+  <div class="proj-grid wrap" style="padding:0; max-width:1280px;">
+    <!-- Populated dynamically via /api/projects -->
+  </div>
+  <a href="projects-ongoing.html" class="btn btn-outline-dark">View All Ongoing Projects →</a>
+</section>
+
+<section class="team" id="team">
+  <div class="wrap">
+    <div class="team-header">
+      <span class="eyebrow">Our Leadership</span>
+      <p class="quote serif">"Coming together, sharing together, working together, succeeding together."</p>
+    </div>
+    <div class="team-grid" id="homeTeamGrid">
+      <div class="team-member">
+        <div class="avatar"><img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200&q=80" alt="Mr. S. Bala Krishnan"></div>
+        <h4>Mr. S. Bala Krishnan</h4>
+        <div class="role">President</div>
+      </div>
+      <div class="team-member">
+        <div class="avatar"><img src="https://images.unsplash.com/photo-1610631066894-62452ccb927c?w=200&q=80" alt="Mr. S.S.A. Baskaran"></div>
+        <h4>Mr. S.S.A. Baskaran</h4>
+        <div class="role">Vice President</div>
+      </div>
+      <div class="team-member">
+        <div class="avatar"><img src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?w=200&q=80" alt="Mr. P. Kamaraj"></div>
+        <h4>Mr. P. Kamaraj</h4>
+        <div class="role">Secretary</div>
+      </div>
+      <div class="team-member">
+        <div class="avatar"><img src="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?w=200&q=80" alt="Mr. K. Jai Sankar"></div>
+        <h4>Mr. K. Jai Sankar</h4>
+        <div class="role">Treasurer</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:40px;">
+      <a href="team.html" class="btn btn-outline-dark">Meet the Entire Team →</a>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="wrap" style="display:flex; flex-direction:column; gap:40px;">
+    <div class="section-header" style="align-items:center; text-align:center;">
+      <span class="eyebrow" style="text-align:center;">Visual Stories</span>
+      <h2 class="serif" style="text-align:center;">Moments from our eco-restoration drives</h2>
+    </div>
+    <div class="filters">
+      <span class="filter-pill active" data-filter="all">All</span>
+      <span class="filter-pill" data-filter="miyawaki">Miyawaki Island</span>
+      <span class="filter-pill" data-filter="chinna-kulam">Chinna Kulam</span>
+      <span class="filter-pill" data-filter="sengulam">Sengulam</span>
+      <span class="filter-pill" data-filter="planting">Avenue Planting</span>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-col">
+        <div class="gallery-item" data-category="planting"><img src="https://images.unsplash.com/photo-1516214104703-d870798883c5?w=600&q=80" alt="Roadside avenue planting in Sivakasi"></div>
+        <div class="gallery-item" data-category="sengulam"><img src="https://images.unsplash.com/photo-1552799446-159ba9523315?w=600&q=80" alt="Sengulam water reservoir restoration"></div>
+      </div>
+      <div class="gallery-col">
+        <div class="gallery-item" data-category="miyawaki"><img src="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=600&q=80" alt="Miyawaki urban forest canopy"></div>
+        <div class="gallery-item" data-category="chinna-kulam"><img src="https://images.unsplash.com/photo-1500673922987-e212871fec22?w=600&q=80" alt="Chinna Kulam shoreline and aquatic life"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap contact" id="contact">
+  <div class="contact-info">
+    <div class="section-header">
+      <span class="eyebrow">Connect</span>
+      <h2 class="serif">Get in touch with us</h2>
+    </div>
+    <div class="contact-rows">
+      <div class="contact-row">
+        <div class="icon-chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z" stroke="#1b4332" stroke-width="1.7"/><circle cx="12" cy="9.5" r="2.4" stroke="#1b4332" stroke-width="1.7"/></svg></div>
+        <div><div class="label">Address</div><div class="value">15, Thiruthangal Road, Sivakasi, 626 123, Tamil Nadu, India</div></div>
+      </div>
+      <div class="contact-row">
+        <div class="icon-chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5c0 8.28 6.72 15 15 15l3-4-6-3-2 2c-2-1-4-3-5-5l2-2-3-6-4 3Z" stroke="#1b4332" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+        <div><div class="label">Phone</div><div class="value">+91 77085 36365, +91 94431 47504</div></div>
+      </div>
+      <div class="contact-row">
+        <div class="icon-chip"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="#1b4332" stroke-width="1.6"/><path d="M3 6l9 7 9-7" stroke="#1b4332" stroke-width="1.6"/></svg></div>
+        <div><div class="label">Email</div><div class="value">sivakasigreenforum@gmail.com</div></div>
+      </div>
+    </div>
+    <div class="socials">
+      <a href="https://twitter.com" target="_blank" rel="noopener" class="social-chip" title="Twitter / X">𝕏</a>
+      <a href="https://facebook.com" target="_blank" rel="noopener" class="social-chip" title="Facebook">f</a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="social-chip" title="Instagram">◎</a>
+      <a href="https://youtube.com" target="_blank" rel="noopener" class="social-chip" title="YouTube">▶</a>
+    </div>
+    <div class="map-box"><img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80" alt="Map showing Sivakasi Green Forum headquarters"></div>
+  </div>
+  
+  <form class="contact-form" id="homeContactForm">
+    <h3 class="serif">Leave a Message</h3>
+    <div id="homeMsgSuccess" class="home-msg-success">✓ Thanks for reaching out! We'll reply within 2 working days.</div>
+    <div class="form-fields" id="homeFormFields">
+      <div class="field"><label>Your Name *</label><input type="text" name="name" placeholder="Full Name" required></div>
+      <div class="field"><label>Email Address *</label><input type="email" name="email" placeholder="you@example.com" required></div>
+      <div class="field"><label>Message *</label><textarea name="message" placeholder="Write your environmental message here..." required></textarea></div>
+    </div>
+    <button type="submit" class="btn btn-primary" id="homeSubmitBtn">Send Message</button>
+  </form>
+</section>
+
+<footer>
+  <div class="wrap foot-top">
+    <div class="foot-brand">
+      <div class="foot-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 2 5 7 5 13C5 17 8 20 12 20C16 20 19 17 19 13C19 7 12 2 12 2Z" stroke="#F2EFE6" stroke-width="1.6"/><path d="M12 20V11" stroke="#F2EFE6" stroke-width="1.6"/></svg>
+        <span class="serif">Sivakasi Green Forum</span>
+      </div>
+      <p>A Community who loves Nature and Its creations. Working towards water preservation and sustainable forestry.</p>
+    </div>
+    <div class="foot-links">
+      <div class="foot-col">
+        <span class="head">Navigation</span>
+        <a href="index.html">Home</a>
+        <a href="about.html">About Us</a>
+        <a href="team.html">Our Team</a>
+        <a href="mission-vision.html">Mission &amp; Vision</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Ecosystem</span>
+        <a href="projects-completed.html">Completed Projects</a>
+        <a href="projects-ongoing.html">Ongoing Projects</a>
+        <a href="projects-upcoming.html">Upcoming Projects</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="foot-col">
+        <span class="head">Admin</span>
+        <a href="admin-login.html">Admin Login</a>
+        <a href="join-us.html">Volunteer Portal</a>
+      </div>
+    </div>
+  </div>
+  <div class="wrap foot-line"></div>
+  <div class="wrap foot-bottom">
+    <span>Copyright © reserved by Sivakasi Green Forum</span>
+    <div class="foot-social">
+      <span>Instagram</span><span>Facebook</span><span>X</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile burger toggle
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (burgerBtn && mobileMenu) {
+    burgerBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+  }
+
+  // Load 3 active projects dynamically
+  async function loadHomeProjects() {
+    try {
+      const res = await fetch('/api/projects?limit=3');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.projects || data.projects.length === 0) return;
+
+      const grid = document.querySelector('.proj-grid');
+      if (!grid) return;
+
+      grid.innerHTML = data.projects.slice(0, 3).map(p => {
+        const cover = p.cover_image || 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80';
+        const dateStr = p.start_date ? new Date(p.start_date).toLocaleDateString('en-US', { month:'long', year:'numeric' }) : 'Ongoing';
+        return `
+          <a href="project-detail.html?slug=${encodeURIComponent(p.slug)}" class="proj-card" style="text-decoration:none; color:inherit; display:flex; flex-direction:column;">
+            <div class="proj-img"><img src="${cover}" alt="${p.title}" loading="lazy"></div>
+            <div class="proj-info" style="padding:24px;">
+              <span class="date">${dateStr}</span>
+              <h3 style="font-family:'Fraunces',serif; font-weight:700; font-size:20px; color:var(--ink); margin:6px 0 8px;">${p.title}</h3>
+              <p style="font-size:14px; color:var(--sage); line-height:1.5;">${p.short_description || ''}</p>
+            </div>
+          </a>
+        `;
+      }).join('');
+    } catch (e) {
+      console.warn('Using static homepage projects:', e);
+    }
+  }
+
+  // Gallery interactive filters
+  document.querySelectorAll('.filter-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const filter = pill.dataset.filter;
+      const items = document.querySelectorAll('.gallery-item');
+      items.forEach(item => {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Home contact form submission
+  const homeForm = document.getElementById('homeContactForm');
+  if (homeForm) {
+    homeForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('homeSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      const formData = new FormData(homeForm);
+      const payload = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+        subject: 'General Inquiry from Homepage'
+      };
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to send message');
+
+        document.getElementById('homeMsgSuccess').style.display = 'block';
+        document.getElementById('homeFormFields').style.display = 'none';
+        btn.style.display = 'none';
+      } catch (err) {
+        alert('Error: ' + err.message);
+        btn.disabled = false;
+        btn.textContent = 'Send Message';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', loadHomeProjects);
+</script>
+
+</body>
+</html>
