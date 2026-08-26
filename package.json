@@ -6,6 +6,19 @@
   "scripts": {
     "start": "node backend/backend/server.js",
     "dev": "node backend/backend/server.js",
-    "seed": "node backend/backend/db/seed.js"
+    "seed": "node backend/backend/db/seed.js",
+    "build": "npm install"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^13.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.2",
+    "express-validator": "^7.3.2",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.2.0"
   }
 }

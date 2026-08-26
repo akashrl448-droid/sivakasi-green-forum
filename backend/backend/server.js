@@ -7,6 +7,11 @@ const path = require('path');
 
 // Ensures the DB file + schema exist before any route touches it
 require('./db');
+try {
+  require('./db/seed');
+} catch (e) {
+  console.log('Seed skipped or already completed:', e.message);
+}
 
 const authRoutes = require('./routes/auth');
 const projectRoutes = require('./routes/projects');
