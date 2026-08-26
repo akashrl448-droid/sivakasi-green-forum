@@ -47,8 +47,19 @@ router.get('/', [query('category').optional().isIn(['completed', 'ongoing', 'upc
   });
 });
 
+/* ---------- ADMIN ALL PROJECTS (must be defined before /:slug) ---------- */
+const getAllAdminProjects = (req, res) => {
+  const rows = db.prepare('SELECT * FROM projects ORDER BY display_order ASC, created_at DESC').all();
+  res.json({ projects: rows.map(parseProjectRow) });
+};
+router.get('/admin/all', requireAuth, getAllAdminProjects);
+router.get('/all', requireAuth, getAllAdminProjects);
+
 // GET /api/projects/:slug — public project detail (only if published)
-router.get('/:slug', (req, res) => {
+router.get('/:slug', (req, res, next) => {
+  if (req.params.slug === 'all' || req.params.slug === 'admin') {
+    return next();
+  }
   const row = db.prepare("SELECT * FROM projects WHERE slug = ? AND status = 'published'").get(req.params.slug);
   if (!row) return res.status(404).json({ error: 'Project not found' });
 
@@ -75,16 +86,6 @@ function normalizeArray(val) {
   }
   return [];
 }
-
-/* ---------- ADMIN (protected) ---------- */
-
-// GET /api/admin/projects/all or /api/admin/projects/admin/all — all projects regardless of status, for the dashboard table
-const getAllAdminProjects = (req, res) => {
-  const rows = db.prepare('SELECT * FROM projects ORDER BY display_order ASC, created_at DESC').all();
-  res.json({ projects: rows.map(parseProjectRow) });
-};
-router.get('/admin/all', requireAuth, getAllAdminProjects);
-router.get('/all', requireAuth, getAllAdminProjects);
 
 const projectValidation = [
   body('title').isString().trim().isLength({ min: 2 }).withMessage('Title is required'),
