@@ -33,6 +33,19 @@ const allowedOrigins = process.env.FRONTEND_ORIGIN
   ? process.env.FRONTEND_ORIGIN.split(',').map((s) => s.trim())
   : [];
 
+/* ---------- request logger ---------- */
+// Real-time visitor & request logger for Render console
+app.use((req, res, next) => {
+  if (req.path === '/healthz') return next(); // filter out automated health checks
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const ip = req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : req.socket.remoteAddress;
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} ${res.statusCode} (${duration}ms) - IP: ${ip}`);
+  });
+  next();
+});
+
 /* ---------- global middleware ---------- */
 app.use(
   cors({
