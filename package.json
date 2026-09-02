@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Sivakasi Green Forum — Environmental NGO Web Application & Admin Panel",
   "main": "backend/backend/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "node backend/backend/server.js",
     "dev": "node backend/backend/server.js",

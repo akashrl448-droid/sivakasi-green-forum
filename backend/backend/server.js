@@ -24,7 +24,14 @@ const uploadRoutes = require('./routes/upload');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Trust reverse proxy (Cloudflare / Render / Nginx) so client IP and HTTPS are detected accurately
+app.set('trust proxy', 1);
+
 const fs = require('fs');
+
+const allowedOrigins = process.env.FRONTEND_ORIGIN
+  ? process.env.FRONTEND_ORIGIN.split(',').map((s) => s.trim())
+  : [];
 
 /* ---------- global middleware ---------- */
 app.use(
@@ -35,6 +42,9 @@ app.use(
       if (!origin || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
         return callback(null, true);
       }
+      if (allowedOrigins.length > 0 && (allowedOrigins.includes(origin) || allowedOrigins.includes('*'))) {
+        return callback(null, true);
+      }
       callback(null, origin);
     },
     credentials: true, // required so the httpOnly session cookie is sent/received
@@ -42,6 +52,11 @@ app.use(
 );
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
+
+// Health check endpoint for Render zero-downtime deployments & uptime monitoring
+app.get('/healthz', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
 
 // Basic global rate limit as a backstop; stricter limits also applied per-route (login, forms)
 app.use(
@@ -109,8 +124,8 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong. Please try again.' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Sivakasi Green Forum API running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Sivakasi Green Forum API running on port ${PORT}`);
 });
 
 module.exports = app;
